@@ -9,6 +9,7 @@ import {
   setCurrentIndex,
   setDeleteIndex,
   unActiveItems,
+  removeItem
 } from "./slices/calcItemSlice";
 
 function App() {
@@ -25,7 +26,7 @@ function App() {
   const line = {
     id: 105,
     title: "line",
-    items: [{ id: 1, title: "" }],
+    items: [{ id: 1, title: "" }]
   };
 
   const dragStartHandler = (e, item) => {
@@ -94,9 +95,9 @@ function App() {
     //   setConstructor([currentItem, ...constructor])
     // }
     dispatch(addConstructorItem(currentItem));
-    // dispatch(unActiveItems(currentItem));
-    constructorItem.map((items) =>
-      items == currentItem ? alert("true") : alert("false"))
+    dispatch(unActiveItems(currentItem));
+    /* constructorItem.map((items) =>
+      items.id === currentItem.id ? alert("true") : alert("false"))*/
     // setArray(array.map(item => item.id === currentItem.id ? {(...item, disabled="true")}: item))
   };
 
@@ -107,38 +108,83 @@ function App() {
     e.target.style.border = "1px solid green";
   };
 
-  const changeConstructorMode =()=> {
-    setConstructorMode(!constructorMode)
-  }
-  const unActiveItem =() => {
+  const changeConstructorMode = () => {
+    setConstructorMode(!constructorMode);
+    let result = document.querySelectorAll(
+      "div.calculator_area > div > div.items"
+    );
+    console.log(result);
+    result.forEach((element) => {
+      element.onmousedown = function () {
+        element.style.background = "blue";
+      };
+      element.onmouseenter = function () {
+        element.style.border = "2px solid blue";
+      };
+      element.onmouseleave = function () {
+        element.style.border = "1px solid green";
+      };
+      element.onmouseup = function () {
+        element.style.background = "none";
+      };
+      /*element.onclick = function () {eval("dispatch(pressButton(number.value))")
+      }*/
+    });
+  };
+  const remove = (item) => {
+    const deleteIndex = constructorItem.findIndex((items) => items === item);
+    // console.log("index", deleteIndex)
+    dispatch(setDeleteIndex(deleteIndex));
+    dispatch(removeItem(item));
+  };
 
-  }
+  const enableCalck = () => {
+    setConstructorMode(!constructorMode);
+    let result = document.querySelectorAll(
+      "div.calculator_area > div > div.items"
+    );
+    console.log(result);
+    result.forEach((element) => {
+      element.onmousedown = null;
+      element.onmouseenter = function () {
+        element.style.border = null;
+      };
+      element.onmouseleave = function () {
+        element.style.border = null;
+      };
+      element.onmouseup = function () {
+        element.style.background = null;
+      };
+    });
+  };
 
   return (
     <div className="App">
       <button onClick={() => changeConstructorMode()}>Нажии меня</button>
+      <button onClick={() => enableCalck()}>Нажми меня2</button>
       <div className="container">
-        {constructorMode && (<div className="calculator_item">
-          {calcItem.map((item) => (
-            <div
-              key={item.id}
-              className={item.title}
-              draggable={item.draggable}
-              disabled={item.disabled}
-              // onDragOver={(e) => dragOverHandler(e)}
-              // onDragLeave={(e) => dragLeaveHandler(e)}
-              onDragStart={(e) => dragStartHandler(e, item)}
-              onDragEnd={(e) => dragEndHandler(e)}
-              onDrop={(e) => dropHandler(e, item)}
-            >
-              {item.items.map((key) => (
-                <div className="items" id={key.id}>
-                  <div>{key.value}</div>
-                </div>
-              ))}
-            </div>
-          ))}
-        </div>)}
+        {constructorMode && (
+          <div className="calculator_item">
+            {calcItem.map((item) => (
+              <div
+                key={item.id}
+                className={item.title}
+                draggable={item.draggable}
+                // onDragOver={(e) => dragOverHandler(e)}
+                // onDragLeave={(e) => dragLeaveHandler(e)}
+                onDragStart={(e) => dragStartHandler(e, item)}
+                onDragEnd={(e) => dragEndHandler(e)}
+                onDrop={(e) => dropHandler(e, item)}
+              >
+                {item.items.map((key) => (
+                  <div className="items" id={key.id}>
+                    <div>{key.value}</div>
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        )}
         <div
           className="calculator_area"
           onDragOver={(e) => dragOverHandlerArea(e)}
@@ -154,14 +200,16 @@ function App() {
               onDragStart={(e) => dragStartHandler(e, item)}
               // onDrop={(e) => dropHandlerConstructor(e, item)}
               draggable="true"
+              onDoubleClick={() => remove(item)}
+              disabled="true"
             >
               {item.items.map((number) => (
                 <div
                   className="items"
                   id={number.id}
                   onClick={() => dispatch(pressButton(number.value))}
-                  onMouseEnter={(e) => hoverHandler(e)}
-                  onMouseLeave={(e) => outHandler(e)}
+                  // onMouseEnter={(e) => hoverHandler(e)}
+                  //onMouseLeave={(e) => outHandler(e)}
                 >
                   <div>{number.value}</div>
                 </div>

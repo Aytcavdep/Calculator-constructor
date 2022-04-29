@@ -10,7 +10,7 @@ export const calcItemSlice = createSlice({
         title: "display",
         disabled: false,
         draggable: true,
-        items: [{ id: 1, title: "display", value: 0 }],
+        items: [{ id: 1, title: "display", value: 0 }]
       },
       {
         id: 2,
@@ -21,8 +21,8 @@ export const calcItemSlice = createSlice({
           { id: 1, title: "divide", value: "/" },
           { id: 2, title: "multiply", value: "*" },
           { id: 3, title: "subtract", value: "-" },
-          { id: 4, title: "sum", value: "+" },
-        ],
+          { id: 4, title: "sum", value: "+" }
+        ]
       },
       {
         id: 3,
@@ -40,18 +40,18 @@ export const calcItemSlice = createSlice({
           { id: 8, title: 2, value: 2 },
           { id: 9, title: 3, value: 3 },
           { id: 10, title: 0, value: 0 },
-          { id: 11, title: "point", value: "." },
-        ],
+          { id: 11, title: "point", value: "." }
+        ]
       },
       {
         id: 4,
         title: "calculate",
         disabled: false,
         draggable: true,
-        items: [{ id: 1, title: "calculate", value: "=" }],
-      },
+        items: [{ id: 1, title: "calculate", value: "=" }]
+      }
     ],
-    constructor: [],
+    constructor: []
   },
   currentIndex: "",
   deleteIndex: "",
@@ -59,12 +59,15 @@ export const calcItemSlice = createSlice({
   operator: "",
   result: "",
   reducers: {
+    removeItem(state, action) {
+      state.calcButton.map((items) =>
+        items.id === action.payload.id ? (items.draggable = "true") : items
+      );
+      state.constructor.splice(state.deleteIndex, 1);
+    },
     unActiveItems(state, action) {
-      // console.log(action.payload);
-      // const calcButton = state.calcButton;
-      // console.log(calcButton);
-      state.calcButton = state.calcButton.map((items) =>
-        items === action.payload ? alert("true") : alert("false")
+      state.calcButton.map((items) =>
+        items.id === action.payload.id ? (items.draggable = "false") : items
       );
     },
     setDeleteIndex(state, action) {
@@ -98,7 +101,7 @@ export const calcItemSlice = createSlice({
       state.constructor.splice(action.payload + 1, 0, {
         id: 105,
         title: "line",
-        items: [{ id: 1, title: "" }],
+        items: [{ id: 1, title: "" }]
       });
     },
     filtrConstructorLine(state, action) {
@@ -168,8 +171,8 @@ export const calcItemSlice = createSlice({
             break;
         }
       }
-    },
-  },
+    }
+  }
 });
 
 export const {
@@ -181,6 +184,7 @@ export const {
   setDeleteIndex,
   setConstructorMode,
   unActiveItems,
+  removeItem
 } = calcItemSlice.actions;
 
 export default calcItemSlice.reducer;

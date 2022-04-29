@@ -1,9 +1,8 @@
 * {
-  padding: 0 ;
+  padding: 0;
   margin: 0;
-  box-sizing:border-box;
+  box-sizing: border-box;
 }
-
 
 .App {
   width: 640px;
@@ -21,7 +20,6 @@
   grid-template-columns: 50% 50%;
   gap: 20px;
   justify-content: center; */
-
 }
 
 .container {
@@ -33,10 +31,7 @@
   height: 695px;
   text-align: center;
   margin: auto;
-
 }
-
-
 
 .calculator_area,
 .calculator_item {
@@ -73,14 +68,11 @@
   grid-template-columns: repeat(3, 1fr);
 }
 
-
-
 .items {
   border: 1px solid green;
   margin: 5px;
   height: 60px;
   display: grid;
-  
 }
 
 .tems:hover {
@@ -108,7 +100,7 @@
   border: none;
 }
 
-[disabled] {
+[draggable="false"] {
   cursor: no-drop;
   opacity: 0.5;
 }
