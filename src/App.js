@@ -9,7 +9,7 @@ import {
   setCurrentIndex,
   setDeleteIndex,
   unActiveItems,
-  removeItem
+  removeItem,
 } from "./slices/calcItemSlice";
 
 function App() {
@@ -26,7 +26,7 @@ function App() {
   const line = {
     id: 105,
     title: "line",
-    items: [{ id: 1, title: "" }]
+    items: [{ id: 1, title: "" }],
   };
 
   const dragStartHandler = (e, item) => {
@@ -108,13 +108,25 @@ function App() {
     e.target.style.border = "1px solid green";
   };
 
+  // function doubleClck() {
+  //   let calcItem = document.querySelectorAll(
+  //     "div.calculator_area > div"
+  //   );
+  //   console.log(calcItem)
+  //   calcItem.forEach((element) => {
+  //     element.ondoubleclick = function () {
+  //       element.style.border = "2px solid red";
+  //     };
+  //   })
+  // }
+  // doubleClck()
+
   const changeConstructorMode = () => {
     setConstructorMode(!constructorMode);
-    let result = document.querySelectorAll(
+    let calcButton = document.querySelectorAll(
       "div.calculator_area > div > div.items"
     );
-    console.log(result);
-    result.forEach((element) => {
+    calcButton.forEach((element) => {
       element.onmousedown = function () {
         element.style.background = "blue";
       };
@@ -127,15 +139,34 @@ function App() {
       element.onmouseup = function () {
         element.style.background = "none";
       };
-      /*element.onclick = function () {eval("dispatch(pressButton(number.value))")
-      }*/
+      element.onclick = function (e) {
+        dispatch(pressButton(e.path[0].innerText));
+      };
     });
+    // [].forEach.call(result, function(el) {
+    //   console.log(el);
+    //   el.onclick = function (e) {console.log(e.path[0].innerText);
+    //   }
+    // })
+    // let calcItem = document.querySelectorAll("div.calculator_area > div");
+    // calcItem.forEach((element) => {
+    //   element.ondoubleclick = null;
+    // });
+    // let calcItem = document.querySelectorAll("div.calculator_area > div");
+    // console.log(calcItem);
+    // calcItem.forEach((element) => {
+    //   // element.ondoubleclick = function () {
+    //   //   element.style.background = "red";
+    //   element.ondblclick = function (e) {
+    //     console.log(e);
+    //     remove(e.path[0].className = 'items' ? e.path[1].className : e.path[0].className);
+    //   };
+    // });
   };
   const remove = (item) => {
-    const deleteIndex = constructorItem.findIndex((items) => items === item);
-    // console.log("index", deleteIndex)
+    const deleteIndex = constructorItem.findIndex((items) => items.id === item.id);
     dispatch(setDeleteIndex(deleteIndex));
-    dispatch(removeItem(item));
+    dispatch(removeItem(item.id));
   };
 
   const enableCalck = () => {
@@ -143,7 +174,6 @@ function App() {
     let result = document.querySelectorAll(
       "div.calculator_area > div > div.items"
     );
-    console.log(result);
     result.forEach((element) => {
       element.onmousedown = null;
       element.onmouseenter = function () {
@@ -155,7 +185,16 @@ function App() {
       element.onmouseup = function () {
         element.style.background = null;
       };
+      element.onclick = null;
     });
+    // let calcItem = document.querySelectorAll("div.calculator_area > div");
+    // console.log(calcItem);
+    // calcItem.forEach((element) => {
+    //   // element.ondoubleclick = function () {
+    //   //   remove(item)
+    //   // };
+    //   // };
+    // });
   };
 
   return (
@@ -200,14 +239,14 @@ function App() {
               onDragStart={(e) => dragStartHandler(e, item)}
               // onDrop={(e) => dropHandlerConstructor(e, item)}
               draggable="true"
-              onDoubleClick={() => remove(item)}
+             onDoubleClick={() => remove(item)}
               disabled="true"
             >
               {item.items.map((number) => (
                 <div
                   className="items"
                   id={number.id}
-                  onClick={() => dispatch(pressButton(number.value))}
+                  // onClick={() => dispatch(pressButton(number.value))}
                   // onMouseEnter={(e) => hoverHandler(e)}
                   //onMouseLeave={(e) => outHandler(e)}
                 >

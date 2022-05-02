@@ -61,7 +61,7 @@ export const calcItemSlice = createSlice({
   reducers: {
     removeItem(state, action) {
       state.calcButton.map((items) =>
-        items.id === action.payload.id ? (items.draggable = "true") : items
+        items.id === action.payload ? (items.draggable = "true") : items
       );
       state.constructor.splice(state.deleteIndex, 1);
     },
