@@ -53,8 +53,8 @@ export const calcItemSlice = createSlice({
     ],
     constructor: []
   },
-  currentIndex: "",
-  deleteIndex: "",
+  currentIndex: -1,
+  deleteIndex: -1,
   secondNumber: "",
   operator: "",
   result: "",
@@ -87,11 +87,21 @@ export const calcItemSlice = createSlice({
         } else {
           state.constructor.unshift(action.payload);
         }
-      } else if (state.deleteIndex !== -1) {
+      } else if (state.currentIndex !== -1 && state.currentIndex !== undefined) {
+        console.log(state.currentIndex+1)
         state.constructor.splice(state.deleteIndex, 1);
         state.constructor.splice(state.currentIndex + 1, 0, action.payload);
+        state.currentIndex = -1
+      } else if (state.deleteIndex !== -1) {
+        console.log(state.deleteIndex)
+        state.constructor.splice(state.deleteIndex, 1);
+        state.constructor.splice(state.currentIndex + 1, 0, action.payload);
+        state.currentIndex = -1
+
+        
       } else {
         state.constructor.push(action.payload);
+        state.currentIndex = -1
       }
     },
 

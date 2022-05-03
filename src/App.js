@@ -30,32 +30,35 @@ function App() {
   };
 
   const dragStartHandler = (e, item) => {
-    // console.log("start", item);
     const deleteIndex = constructorItem.findIndex((items) => items == item);
-    // console.log("index", deleteIndex)
     dispatch(setDeleteIndex(deleteIndex));
     setCurrentItem(item);
   };
+
   const dragOverHandler = (e, item) => {
     e.preventDefault();
     const currentIndex = constructorItem.findIndex((items) => items == item);
+     console.log("Линия", currentIndex)
     dispatch(setCurrentIndex(currentIndex));
     setParentClass(e.target.className);
+    
     if (!targetClass) {
-      // console.log("Линия")
+      //  console.log("Линия")
       setTargetClass(e.target.className);
 
       dispatch(addConstructorLine(currentIndex));
     }
-    // if (count === 0) {
-    //   console.log("over", item)
-    //   dispatch(addConstructorLine(currentIndex))
-    //   setCount(1)
-    //   }
   };
 
   const dragOverHandlerArea = (e) => {
     e.preventDefault();
+    // console.log("over")
+    if (!targetClass) {
+      // console.log("Линия")
+     setTargetClass(e.target.className);
+
+     dispatch(addConstructorLine(6));
+   }
   };
   const dragLeaveHandler = (e) => {
     // console.log("Текущий", e.target.className);
@@ -67,12 +70,9 @@ function App() {
       dispatch(filtrConstructorLine());
       setTargetClass(0);
     }
-    // dispatch(filtrConstructorLine())
-    // setCount(0)
   };
   const dragEndHandler = (e) => {
     dispatch(filtrConstructorLine());
-    // setCount(0)
   };
 
   const dropHandler = (e, item) => {
@@ -81,24 +81,15 @@ function App() {
     setTargetClass(0);
     setCount(0);
     dispatch(unActiveItems(item));
-    // console.log(item);
   };
 
   const dropHandlerConstructor = (e, item) => {
     e.preventDefault();
     dispatch(filtrConstructorLine());
     setTargetClass(0);
-    setCount(0);
-
-    // console.log("drop", currentItem);
-    // if (currentItem.title === "display") {
-    //   setConstructor([currentItem, ...constructor])
-    // }
     dispatch(addConstructorItem(currentItem));
     dispatch(unActiveItems(currentItem));
-    /* constructorItem.map((items) =>
-      items.id === currentItem.id ? alert("true") : alert("false"))*/
-    // setArray(array.map(item => item.id === currentItem.id ? {(...item, disabled="true")}: item))
+
   };
 
   const hoverHandler = (e) => {
@@ -108,19 +99,6 @@ function App() {
     e.target.style.border = "1px solid green";
   };
 
-  // function doubleClck() {
-  //   let calcItem = document.querySelectorAll(
-  //     "div.calculator_area > div"
-  //   );
-  //   console.log(calcItem)
-  //   calcItem.forEach((element) => {
-  //     element.ondoubleclick = function () {
-  //       element.style.border = "2px solid red";
-  //     };
-  //   })
-  // }
-  // doubleClck()
-
   const changeConstructorMode = () => {
     setConstructorMode(!constructorMode);
     let calcButton = document.querySelectorAll(
@@ -128,13 +106,13 @@ function App() {
     );
     calcButton.forEach((element) => {
       element.onmousedown = function () {
-        element.style.background = "blue";
+        element.style.background = "#5D5FEF";
       };
       element.onmouseenter = function () {
-        element.style.border = "2px solid blue";
+        element.style.border = "2px solid #5D5FEF";
       };
       element.onmouseleave = function () {
-        element.style.border = "1px solid green";
+        element.style.border = "1px solid #E2E3E5";
       };
       element.onmouseup = function () {
         element.style.background = "none";
@@ -143,25 +121,6 @@ function App() {
         dispatch(pressButton(e.path[0].innerText));
       };
     });
-    // [].forEach.call(result, function(el) {
-    //   console.log(el);
-    //   el.onclick = function (e) {console.log(e.path[0].innerText);
-    //   }
-    // })
-    // let calcItem = document.querySelectorAll("div.calculator_area > div");
-    // calcItem.forEach((element) => {
-    //   element.ondoubleclick = null;
-    // });
-    // let calcItem = document.querySelectorAll("div.calculator_area > div");
-    // console.log(calcItem);
-    // calcItem.forEach((element) => {
-    //   // element.ondoubleclick = function () {
-    //   //   element.style.background = "red";
-    //   element.ondblclick = function (e) {
-    //     console.log(e);
-    //     remove(e.path[0].className = 'items' ? e.path[1].className : e.path[0].className);
-    //   };
-    // });
   };
   const remove = (item) => {
     const deleteIndex = constructorItem.findIndex((items) => items.id === item.id);
@@ -187,14 +146,6 @@ function App() {
       };
       element.onclick = null;
     });
-    // let calcItem = document.querySelectorAll("div.calculator_area > div");
-    // console.log(calcItem);
-    // calcItem.forEach((element) => {
-    //   // element.ondoubleclick = function () {
-    //   //   remove(item)
-    //   // };
-    //   // };
-    // });
   };
 
   return (
@@ -237,7 +188,7 @@ function App() {
               className={item.title}
               onDragOver={(e) => dragOverHandler(e, item)}
               onDragStart={(e) => dragStartHandler(e, item)}
-              // onDrop={(e) => dropHandlerConstructor(e, item)}
+             //  onDrop={(e) => dropHandlerConstructor(e, item)}
               draggable="true"
              onDoubleClick={() => remove(item)}
               disabled="true"
