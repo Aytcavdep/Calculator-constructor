@@ -172,7 +172,7 @@ function Calculator() {
                 onDrop={(e) => dropHandler(e, item)}
               >
                 {item.items.map((key) => (
-                  <div className="items" id={key.id}>
+                  <div className="items" id={key.id} key={key.id}>
                     <div>{key.value}</div>
                   </div>
                 ))}
@@ -202,13 +202,14 @@ function Calculator() {
           {constructorItem.map((item) => (
             <div
               className={item.title}
+              key={item.id}
               onDragOver={(e) => dragOverHandler(e, item)}
               onDragStart={(e) => dragStartHandler(e, item)}
               draggable="true"
               onDoubleClick={() => remove(item)}
             >
               {item.items.map((number) => (
-                <div className="items" id={number.id}>
+                <div className="items" id={number.id} key={number.id}>
                   <div>{number.value}</div>
                 </div>
               ))}

@@ -90,12 +90,15 @@ export const calcItemSlice = createSlice({
         state.currentIndex !== -1 &&
         state.currentIndex !== undefined
       ) {
-        console.log(state.currentIndex + 1);
-        state.constructor.splice(state.deleteIndex, 1);
-        state.constructor.splice(state.currentIndex + 1, 0, action.payload);
-        state.currentIndex = -1;
+        if (state.deleteIndex !== -1) {
+          state.constructor.splice(state.deleteIndex, 1);
+          state.constructor.splice(state.currentIndex + 1, 0, action.payload);
+          state.currentIndex = -1;
+        } else {
+          state.constructor.splice(state.currentIndex + 1, 0, action.payload);
+          state.currentIndex = -1;
+        }
       } else if (state.deleteIndex !== -1) {
-        console.log(state.deleteIndex);
         state.constructor.splice(state.deleteIndex, 1);
         state.constructor.splice(state.currentIndex + 1, 0, action.payload);
         state.currentIndex = -1;
@@ -106,11 +109,13 @@ export const calcItemSlice = createSlice({
     },
 
     addConstructorLine(state, action) {
-      state.constructor.splice(action.payload + 1, 0, {
-        id: 105,
-        title: "line",
-        items: [{ id: 1, title: "" }],
-      });
+      if (!state.constructor.find((item) => item.id === 105)) {
+        state.constructor.splice(action.payload + 1, 0, {
+          id: 105,
+          title: "line",
+          items: [{ id: 1, title: "" }],
+        });
+      }
     },
     filtrConstructorLine(state, action) {
       state.constructor = state.constructor.filter((item) => item.id !== 105);
@@ -140,30 +145,34 @@ export const calcItemSlice = createSlice({
         state.secondNumber = state.constructor[0].items[0].value;
         switch (state.operator) {
           case "-":
-            state.constructor[0].items[0].value =
-              parseFloat(state.firstNumber) - parseFloat(state.secondNumber);
+            state.constructor[0].items[0].value = +(
+              parseFloat(state.firstNumber) - parseFloat(state.secondNumber)
+            ).toFixed(10);
             state.firstNumber = 0;
             state.secondNumber = 0;
             state.operator = "";
             break;
           case "+":
-            state.constructor[0].items[0].value =
-              parseFloat(state.firstNumber) + parseFloat(state.secondNumber);
+            state.constructor[0].items[0].value = +(
+              parseFloat(state.firstNumber) + parseFloat(state.secondNumber)
+            ).toFixed(10);
             state.firstNumber = 0;
             state.secondNumber = 0;
             state.operator = "";
             break;
           case "*":
-            state.constructor[0].items[0].value =
-              parseFloat(state.firstNumber) * parseFloat(state.secondNumber);
+            state.constructor[0].items[0].value = +(
+              parseFloat(state.firstNumber) * parseFloat(state.secondNumber)
+            ).toFixed(10);
             state.firstNumber = 0;
             state.secondNumber = 0;
             state.operator = "";
             break;
           case "/":
-            if (state.secondNumber !== 0) {
-              state.constructor[0].items[0].value =
-                parseFloat(state.firstNumber) / parseFloat(state.secondNumber);
+            if (+state.secondNumber !== 0) {
+              state.constructor[0].items[0].value = +(
+                parseFloat(state.firstNumber) / parseFloat(state.secondNumber)
+              ).toFixed(10);
               state.firstNumber = 0;
               state.secondNumber = 0;
               state.operator = "";
