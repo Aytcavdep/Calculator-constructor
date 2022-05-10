@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { useSelector } from "react-redux";
 
 export const calcItemSlice = createSlice({
   name: "calc_item",
@@ -10,7 +9,7 @@ export const calcItemSlice = createSlice({
         title: "display",
         disabled: false,
         draggable: true,
-        items: [{ id: 1, title: "display", value: 0 }]
+        items: [{ id: 1, title: "display", value: 0 }],
       },
       {
         id: 2,
@@ -21,8 +20,8 @@ export const calcItemSlice = createSlice({
           { id: 1, title: "divide", value: "/" },
           { id: 2, title: "multiply", value: "*" },
           { id: 3, title: "subtract", value: "-" },
-          { id: 4, title: "sum", value: "+" }
-        ]
+          { id: 4, title: "sum", value: "+" },
+        ],
       },
       {
         id: 3,
@@ -40,18 +39,18 @@ export const calcItemSlice = createSlice({
           { id: 8, title: 2, value: 2 },
           { id: 9, title: 3, value: 3 },
           { id: 10, title: 0, value: 0 },
-          { id: 11, title: "point", value: "." }
-        ]
+          { id: 11, title: "point", value: "." },
+        ],
       },
       {
         id: 4,
         title: "calculate",
         disabled: false,
         draggable: true,
-        items: [{ id: 1, title: "calculate", value: "=" }]
-      }
+        items: [{ id: 1, title: "calculate", value: "=" }],
+      },
     ],
-    constructor: []
+    constructor: [],
   },
   currentIndex: -1,
   deleteIndex: -1,
@@ -80,38 +79,37 @@ export const calcItemSlice = createSlice({
       state.currentIndex = action.payload;
     },
     addConstructorItem(state, action) {
-      if (action.payload.title == "display") {
+      if (action.payload.title === "display") {
         if (state.deleteIndex !== -1) {
           state.constructor.splice(state.deleteIndex, 1);
           state.constructor.unshift(action.payload);
         } else {
           state.constructor.unshift(action.payload);
         }
-      } else if (state.currentIndex !== -1 && state.currentIndex !== undefined) {
-        console.log(state.currentIndex+1)
+      } else if (
+        state.currentIndex !== -1 &&
+        state.currentIndex !== undefined
+      ) {
+        console.log(state.currentIndex + 1);
         state.constructor.splice(state.deleteIndex, 1);
         state.constructor.splice(state.currentIndex + 1, 0, action.payload);
-        state.currentIndex = -1
+        state.currentIndex = -1;
       } else if (state.deleteIndex !== -1) {
-        console.log(state.deleteIndex)
+        console.log(state.deleteIndex);
         state.constructor.splice(state.deleteIndex, 1);
         state.constructor.splice(state.currentIndex + 1, 0, action.payload);
-        state.currentIndex = -1
-
-        
+        state.currentIndex = -1;
       } else {
         state.constructor.push(action.payload);
-        state.currentIndex = -1
+        state.currentIndex = -1;
       }
     },
 
     addConstructorLine(state, action) {
-      // const currentIndex = currentState.findIndex(items => items == action.payload)
-      // console.log(state.currentIndex)
       state.constructor.splice(action.payload + 1, 0, {
         id: 105,
         title: "line",
-        items: [{ id: 1, title: "" }]
+        items: [{ id: 1, title: "" }],
       });
     },
     filtrConstructorLine(state, action) {
@@ -181,8 +179,8 @@ export const calcItemSlice = createSlice({
             break;
         }
       }
-    }
-  }
+    },
+  },
 });
 
 export const {
@@ -194,7 +192,7 @@ export const {
   setDeleteIndex,
   setConstructorMode,
   unActiveItems,
-  removeItem
+  removeItem,
 } = calcItemSlice.actions;
 
 export default calcItemSlice.reducer;
