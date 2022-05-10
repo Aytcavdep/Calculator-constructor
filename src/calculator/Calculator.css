@@ -22,7 +22,7 @@
   top: 20px;
   background: #f3f4f6;
   border-radius: 6px;
-  margin: 20px 40px 20px auto;
+  margin: 20px 65px 20px auto;
 }
 
 button {
@@ -73,7 +73,7 @@ span {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 252px;
+  margin-top: 236px;
   gap: 4px;
 }
 
