@@ -12,6 +12,7 @@ import {
   removeItem,
 } from "../slices/calcItemSlice";
 import "./Calculator.css";
+import { SvgSelector } from "../icon/svgSelector";
 
 function Calculator() {
   const dispatch = useDispatch();
@@ -150,10 +151,12 @@ function Calculator() {
     <div className="area">
       <div className="button_area">
         <button className="runtime" onClick={() => enableCalculator()}>
-          Runtime
+          <SvgSelector id={"eye"} />
+          <span>Runtime</span>
         </button>
         <button className="constructor" onClick={() => enableConstructor()}>
-          {"<> Constructor"}
+          <SvgSelector id={"selector"} />
+          <span>Constructor</span>
         </button>
       </div>
       <div className="container">
@@ -177,6 +180,7 @@ function Calculator() {
             ))}
           </div>
         )}
+
         <div
           className="calculator_area"
           onDragOver={(e) => dragOverHandlerArea(e)}
@@ -184,6 +188,17 @@ function Calculator() {
           onDragEnd={(e) => dragEndHandler(e)}
           onDrop={(e) => dropHandlerConstructor(e)}
         >
+          {constructorItem.length == 0 && (
+            <div className="image">
+              <SvgSelector id={"image"} />
+              <h3>Перетащите сюда</h3>
+              <div>
+                любой элемент
+                <br /> из левой панели
+              </div>
+            </div>
+          )}
+
           {constructorItem.map((item) => (
             <div
               className={item.title}
