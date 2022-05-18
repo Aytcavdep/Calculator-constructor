@@ -3,66 +3,62 @@ import { createSlice } from "@reduxjs/toolkit";
 export const calcItemSlice = createSlice({
   name: "calc_item",
   initialState: {
-    calcButton: [
-      {
-        id: 1,
-        title: "display",
-        disabled: false,
-        draggable: true,
-        items: [{ id: 1, title: "display", value: 0 }],
-      },
-      {
-        id: 2,
-        title: "operators",
-        disabled: false,
-        draggable: true,
-        items: [
-          { id: 1, title: "divide", value: "/" },
-          { id: 2, title: "multiply", value: "*" },
-          { id: 3, title: "subtract", value: "-" },
-          { id: 4, title: "sum", value: "+" },
-        ],
-      },
-      {
-        id: 3,
-        title: "numeric_keypad",
-        disabled: false,
-        draggable: true,
-        items: [
-          { id: 1, title: 7, value: 7 },
-          { id: 2, title: 8, value: 8 },
-          { id: 3, title: 9, value: 9 },
-          { id: 4, title: 4, value: 4 },
-          { id: 5, title: 5, value: 5 },
-          { id: 6, title: 6, value: 6 },
-          { id: 7, title: 1, value: 1 },
-          { id: 8, title: 2, value: 2 },
-          { id: 9, title: 3, value: 3 },
-          { id: 10, title: 0, value: 0 },
-          { id: 11, title: "point", value: "." },
-        ],
-      },
-      {
-        id: 4,
-        title: "calculate",
-        disabled: false,
-        draggable: true,
-        items: [{ id: 1, title: "calculate", value: "=" }],
-      },
-    ],
-    constructor: [],
-  },
-  currentIndex: -1,
-  deleteIndex: -1,
+  //   calcButton: [
+  //     {
+  //       id: 1,
+  //       title: "display",
+  //       disabled: false,
+  //       draggable: true,
+  //       items: [{ id: 1, title: "display", value: 0 }],
+  //     },
+  //     {
+  //       id: 2,
+  //       title: "operators",
+  //       disabled: false,
+  //       draggable: true,
+  //       items: [
+  //         { id: 1, title: "divide", value: "/" },
+  //         { id: 2, title: "multiply", value: "*" },
+  //         { id: 3, title: "subtract", value: "-" },
+  //         { id: 4, title: "sum", value: "+" },
+  //       ],
+  //     },
+  //     {
+  //       id: 3,
+  //       title: "numeric_keypad",
+  //       disabled: false,
+  //       draggable: true,
+  //       items: [
+  //         { id: 1, title: 7, value: 7 },
+  //         { id: 2, title: 8, value: 8 },
+  //         { id: 3, title: 9, value: 9 },
+  //         { id: 4, title: 4, value: 4 },
+  //         { id: 5, title: 5, value: 5 },
+  //         { id: 6, title: 6, value: 6 },
+  //         { id: 7, title: 1, value: 1 },
+  //         { id: 8, title: 2, value: 2 },
+  //         { id: 9, title: 3, value: 3 },
+  //         { id: 10, title: 0, value: 0 },
+  //         { id: 11, title: "point", value: "." },
+  //       ],
+  //     },
+  //     {
+  //       id: 4,
+  //       title: "calculate",
+  //       disabled: false,
+  //       draggable: true,
+  //       items: [{ id: 1, title: "calculate", value: "=" }],
+  //     },
+  //   ],
+  //   constructor: [],
+  // },
   secondNumber: "",
   operator: "",
   result: "",
+  isConstructorMode: true,
   reducers: {
-    removeItem(state, action) {
-      state.calcButton.map((items) =>
-        items.id === action.payload ? (items.draggable = "true") : items
-      );
-      state.constructor.splice(state.deleteIndex, 1);
+    isConstructorModeChange (state) {
+      state.isConstructorMode = !state.isConstructorMode
     },
     unActiveItems(state, action) {
       state.calcButton.map((items) =>
@@ -106,19 +102,6 @@ export const calcItemSlice = createSlice({
         state.constructor.push(action.payload);
         state.currentIndex = -1;
       }
-    },
-
-    addConstructorLine(state, action) {
-      if (!state.constructor.find((item) => item.id === 105)) {
-        state.constructor.splice(action.payload + 1, 0, {
-          id: 105,
-          title: "line",
-          items: [{ id: 1, title: "" }],
-        });
-      }
-    },
-    filtrConstructorLine(state, action) {
-      state.constructor = state.constructor.filter((item) => item.id !== 105);
     },
     pressButton(state, action) {
       if (/\d/.test(action.payload)) {
@@ -190,9 +173,10 @@ export const calcItemSlice = createSlice({
       }
     },
   },
-});
+}});
 
 export const {
+  isConstructorModeChange,
   pressButton,
   addConstructorItem,
   filtrConstructorLine,
@@ -201,7 +185,6 @@ export const {
   setDeleteIndex,
   setConstructorMode,
   unActiveItems,
-  removeItem,
 } = calcItemSlice.actions;
 
 export default calcItemSlice.reducer;
