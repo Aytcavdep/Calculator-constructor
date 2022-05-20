@@ -12,91 +12,96 @@ export const Constructor = () => {
   useEffect(() => {
     setCalcItem(calcItems);
   }, []);
-  
+
   const [currentBlock, setCurrentBlock] = useState(null);
-  const [currentBlockIndex, setCurrentBlockIndex] = useState(-1)
+  const [currentBlockIndex, setCurrentBlockIndex] = useState(-1);
 
   const [targetClass, setTargetClass] = useState(0);
   const [parentClass, setParentClass] = useState(0);
-  const [deleteBlockIndex, setDeleteBlockIndex] = useState(-1)
+  const [deleteBlockIndex, setDeleteBlockIndex] = useState(-1);
   const line = {
     id: 105,
     title: "line",
-    items: [{ id: 1, title: "" }],}
+    items: [{ id: 1, title: "" }],
+  };
 
   const dispatch = useDispatch();
   const isConstructorMode = useSelector(
     (state) => state.calcItem.isConstructorMode
   );
   const findConstructorBlockIndex = ({ id }) => {
-    console.log("find index",id)
     return constructorItem.findIndex((items) => items.id === id);
   };
-  const removeBlockConstructor =(id) => {
-    console.log("remove",id)
-    setConstructorItem([...constructorItem.filter((item) => item.id !== id)])
-  }
-  const changeDraggableBlock = (id) => {
-    console.log("dragchange",id)
-setCalcItem([...calcItem.map((item) => item.id === id ? {...item, isDraggable: !item.isDraggable} : {...item})])
-  }
-  const addConstructorLine =(index) => {
-if (!constructorItem.find((item) => item.id === 105)) {
-  console.log("line")
-  console.log(index)
-  setConstructorItem([...constructorItem.splice(index+1, 0, line)])
-  console.log("line", constructorItem);
-}
-  }
+  const removeBlockConstructor = (id) => {
+    setConstructorItem([...constructorItem.filter((item) => item.id !== id)]);
+  };
+  const changeDraggableBlock = (id, del) => {
+    if (!constructorItem.find((item) => item.id === id) || del === "del") {
+      setCalcItem([
+        ...calcItem.map((item) =>
+          item.id === id
+            ? { ...item, isDraggable: !item.isDraggable }
+            : { ...item }
+        ),
+      ]);
+    }
+  };
+  const addConstructorLine = (index) => {
+    if (!constructorItem.find((item) => item.id === 105)) {
+      const fakeConstructor = constructorItem;
+      fakeConstructor.splice(index + 1, 0, line);
+      setConstructorItem(fakeConstructor);
+    }
+  };
   const removeConstructorLine = () => {
-    removeBlockConstructor(105)
-  }
+    removeBlockConstructor(105);
+  };
   const addConstructorBlock = (currentBlock) => {
-    console.log(currentBlock)
-    console.log(currentBlock.title)
-    console.log(deleteBlockIndex)
-    console.log(constructorItem);
+    const fakeConstructor = constructorItem;
     if (currentBlock.title === "display") {
       if (deleteBlockIndex !== -1) {
-        setConstructorItem([...constructorItem].splice(deleteBlockIndex, 1));
-        setConstructorItem([...constructorItem].unshift(currentBlock));
+        console.log("true вщгиду");
       } else {
-        console.log("true")
-        setConstructorItem(constructorItem.unshift(currentBlock));
-        // setConstructorItem([...constructorItem.splice(-1, 0, currentBlock)]);
+        console.log("true");
+        fakeConstructor.unshift(currentBlock);
+        setConstructorItem(fakeConstructor);
       }
-      
-      // setConstructorItem([currentBlock]);
-    } else if (
-      currentBlockIndex !== -1 &&
-      currentBlockIndex !== undefined
-    ) {
-      console.log("true1")
+    } else if (currentBlockIndex !== -1 && currentBlockIndex !== undefined) {
+      console.log("true1");
       if (deleteBlockIndex !== -1) {
-        console.log("true1")
-        setConstructorItem([...constructorItem].splice(deleteBlockIndex, 1));
-        setConstructorItem([...constructorItem].splice(currentBlockIndex + 1, 0, currentBlock));
+        console.log("true1");
+        if (deleteBlockIndex < currentBlockIndex) {
+          fakeConstructor.splice(deleteBlockIndex, 1);
+        } else {
+          fakeConstructor.splice(deleteBlockIndex + 1, 1);
+        }
+        fakeConstructor.splice(currentBlockIndex + 1, 0, currentBlock);
+        setConstructorItem(fakeConstructor);
+        removeConstructorLine();
         setCurrentBlockIndex(-1);
       } else {
-        console.log("true2")
-        setConstructorItem([...constructorItem].splice(currentBlockIndex + 1, 0, currentBlock));
+        console.log("true2");
+        fakeConstructor.splice(currentBlockIndex + 1, 0, currentBlock);
+        setConstructorItem(fakeConstructor);
         setCurrentBlockIndex(-1);
       }
     } else if (deleteBlockIndex !== -1) {
-      console.log("true3")
-      setConstructorItem([...constructorItem].splice(deleteBlockIndex, 1));
-      setConstructorItem([...constructorItem].splice(currentBlockIndex + 1, 0, currentBlock));
-        setCurrentBlockIndex(-1);
+      console.log("true3");
+      fakeConstructor.splice(deleteBlockIndex, 1);
+      fakeConstructor.splice(currentBlockIndex + 1, 0, currentBlock);
+      setConstructorItem(fakeConstructor);
+      setCurrentBlockIndex(-1);
     } else {
-      console.log("true4")
-      setConstructorItem([...constructorItem].push(currentBlock));
-        setCurrentBlockIndex(-1);
+      console.log("true4");
+      fakeConstructor.push(currentBlock);
+      setConstructorItem(fakeConstructor);
+      setCurrentBlockIndex(-1);
     }
     console.log("добавили объект", constructorItem);
-  }
-   const removeBlockButtons = (id) => {
+  };
+  const removeBlockButtons = (id) => {
     removeBlockConstructor(id);
-    changeDraggableBlock(id);
+    changeDraggableBlock(id, "del");
   };
 
   const dragStartHandler = (e, block) => {
@@ -104,15 +109,15 @@ if (!constructorItem.find((item) => item.id === 105)) {
     setCurrentBlock(block);
   };
 
-  const dragOverHandler = (e, {id}) => {
+  const dragOverHandler = (e, block) => {
     e.preventDefault();
-  setCurrentBlockIndex(findConstructorBlockIndex(id));
+    setCurrentBlockIndex(findConstructorBlockIndex(block));
     setParentClass(e.target.className);
 
     if (!targetClass) {
       setTargetClass(e.target.className);
 
-      addConstructorLine(findConstructorBlockIndex(id));
+      addConstructorLine(findConstructorBlockIndex(block));
     }
   };
 
@@ -126,27 +131,28 @@ if (!constructorItem.find((item) => item.id === 105)) {
   };
   const dragLeaveHandler = (e) => {
     if ((parentClass !== "items") & (e.target.className !== "items")) {
-      removeConstructorLine()
+      removeConstructorLine();
       setTargetClass(0);
     }
   };
   const dragEndHandler = (e) => {
-    removeConstructorLine()
+    removeConstructorLine();
   };
 
   const dropHandler = (e, id) => {
     e.preventDefault();
-    removeConstructorLine()
+    removeConstructorLine();
     setTargetClass(0);
-    changeDraggableBlock(id)
+    changeDraggableBlock(id);
   };
 
   const dropHandlerConstructor = (e, block) => {
     e.preventDefault();
-    removeConstructorLine()
+    console.log("Вот эта сработала");
+    removeConstructorLine();
     setTargetClass(0);
+    changeDraggableBlock(currentBlock.id);
     addConstructorBlock(currentBlock);
-    changeDraggableBlock(currentBlock.id)
   };
 
   return (
@@ -181,16 +187,15 @@ if (!constructorItem.find((item) => item.id === 105)) {
             </div>
           </div>
         )}
-{console.log("конструктор", constructorItem)}
-        {/* {
-          constructorItem.map((block) => (
+        {/* {console.log("конструктор", constructorItem)} */}
+        {constructorItem.map((block) => (
           <CalcBlockButtons
             block={block}
-            onDragOver={(e) => dragOverHandler(e, block.id)}
+            onDragOver={(e) => dragOverHandler(e, block)}
             onDragStart={(e) => dragStartHandler(e, block)}
             onDoubleClick={() => removeBlockButtons(block.id)}
           />
-        ))} */}
+        ))}
       </div>
     </div>
   );
