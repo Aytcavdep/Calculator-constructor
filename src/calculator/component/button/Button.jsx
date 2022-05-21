@@ -1,9 +1,19 @@
+import "./Button.css";
+import { Icon } from "../../../icon/icon";
+import { changeConstructorMode } from "../../../slices/calcItemSlice";
+import { useDispatch } from "react-redux";
 
-export const Button =(name, onClick) => {
+export const Button = ({ className, title, disabled }) => {
+  const dispatch = useDispatch();
 
-    return (
-        <button className={name} onClick={onClick}>
-
-        </button>
-    )
-}
+  return (
+    <button
+      className={className}
+      onClick={() => dispatch(changeConstructorMode())}
+      disabled={disabled}
+    >
+      <Icon name={className} />
+      <span>{title}</span>
+    </button>
+  );
+};

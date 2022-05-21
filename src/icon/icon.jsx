@@ -1,6 +1,6 @@
-export const SvgSelector = ({ id }) => {
-  switch (id) {
-    case "eye":
+export const Icon = ({ name }) => {
+  switch (name) {
+    case "enable_calculator":
       return (
         <svg
           width="20"
@@ -61,7 +61,7 @@ export const SvgSelector = ({ id }) => {
         </svg>
       );
 
-    case "selector":
+    case "disable_calculator":
       return (
         <svg
           width="20"

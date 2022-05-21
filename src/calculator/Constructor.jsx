@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { CalcBlockButtons } from "./component/calcBlockButtons";
-import { isConstructorModeChange } from "../slices/calcItemSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { calcItems } from "./component/calcItem";
-import { SvgSelector } from "../icon/svgSelector";
+import { Icon } from "../icon/icon";
 import "./Constructor.css";
+import { Button } from "./component/button/Button";
 
 export const Constructor = () => {
   const [calcItem, setCalcItem] = useState([]);
@@ -25,7 +25,6 @@ export const Constructor = () => {
     items: [{ id: 1, title: "" }],
   };
 
-  const dispatch = useDispatch();
   const isConstructorMode = useSelector(
     (state) => state.calcItem.isConstructorMode
   );
@@ -33,7 +32,9 @@ export const Constructor = () => {
     return constructorItem.findIndex((items) => items.id === id);
   };
   const removeBlockConstructor = (id) => {
-    setConstructorItem([...constructorItem.filter((item) => item.id !== id)]);
+    if (isConstructorMode) {
+      setConstructorItem([...constructorItem.filter((item) => item.id !== id)]);
+    }
   };
   const changeDraggableBlock = (id, del) => {
     if (!constructorItem.find((item) => item.id === id) || del === "del") {
@@ -75,10 +76,12 @@ export const Constructor = () => {
         } else {
           fakeConstructor.splice(deleteBlockIndex + 1, 1);
         }
-        fakeConstructor.splice(currentBlockIndex + 1, 0, currentBlock);
-        setConstructorItem(fakeConstructor);
-        removeConstructorLine();
-        setCurrentBlockIndex(-1);
+        if (deleteBlockIndex !== currentBlockIndex) {
+          fakeConstructor.splice(currentBlockIndex + 1, 0, currentBlock);
+          setConstructorItem(fakeConstructor);
+          removeConstructorLine();
+          setCurrentBlockIndex(-1);
+        }
       } else {
         console.log("true2");
         fakeConstructor.splice(currentBlockIndex + 1, 0, currentBlock);
@@ -156,46 +159,60 @@ export const Constructor = () => {
   };
 
   return (
-    <div className="container">
-      {isConstructorMode && (
-        <div className="buttonsBlock_area">
-          {calcItem.map((block) => (
+    <div className="area">
+      <div className="button_area">
+        <Button
+          className="enable_calculator"
+          title="Runtime"
+          disabled={!isConstructorMode}
+        />
+        <Button
+          className="disable_calculator"
+          title="Constructor"
+          disabled={isConstructorMode}
+        />
+      </div>
+      <div className="container">
+        {isConstructorMode && (
+          <div className="buttonsBlock_area">
+            {calcItem.map((block) => (
+              <CalcBlockButtons
+                block={block}
+                area="consrtructor_block"
+                onDragStart={(e) => dragStartHandler(e, block)}
+                onDragEnd={(e) => dragEndHandler(e)}
+                onDrop={(e) => dropHandler(e, block.id)}
+              />
+            ))}
+          </div>
+        )}
+        <div
+          className="calculator_area"
+          onDragOver={(e) => dragOverHandlerArea(e)}
+          onDragLeave={(e) => dragLeaveHandler(e)}
+          onDragEnd={(e) => dragEndHandler(e)}
+          onDrop={(e) => dropHandlerConstructor(e)}
+        >
+          {!constructorItem.length && (
+            <div className="image">
+              <Icon name={"image"} />
+              <h3>Перетащите сюда</h3>
+              <div>
+                любой элемент
+                <br /> из левой панели
+              </div>
+            </div>
+          )}
+          {/* {console.log("конструктор", constructorItem)} */}
+          {constructorItem.map((block) => (
             <CalcBlockButtons
               block={block}
-              area="consrtructor_block"
+              onDragOver={(e) => dragOverHandler(e, block)}
               onDragStart={(e) => dragStartHandler(e, block)}
-              onDragEnd={(e) => dragEndHandler(e)}
-              onDrop={(e) => dropHandler(e, block.id)}
+              onDoubleClick={() => removeBlockButtons(block.id)}
             />
           ))}
         </div>
-      )}
-      <div
-        className="calculator_area"
-        onDragOver={(e) => dragOverHandlerArea(e)}
-        onDragLeave={(e) => dragLeaveHandler(e)}
-        onDragEnd={(e) => dragEndHandler(e)}
-        onDrop={(e) => dropHandlerConstructor(e)}
-      >
-        {!constructorItem.length && (
-          <div className="image">
-            <SvgSelector id={"image"} />
-            <h3>Перетащите сюда</h3>
-            <div>
-              любой элемент
-              <br /> из левой панели
-            </div>
-          </div>
-        )}
-        {/* {console.log("конструктор", constructorItem)} */}
-        {constructorItem.map((block) => (
-          <CalcBlockButtons
-            block={block}
-            onDragOver={(e) => dragOverHandler(e, block)}
-            onDragStart={(e) => dragStartHandler(e, block)}
-            onDoubleClick={() => removeBlockButtons(block.id)}
-          />
-        ))}
       </div>
     </div>
   );
