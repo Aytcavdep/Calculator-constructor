@@ -76,7 +76,7 @@ export const Constructor = () => {
           fakeConstructor.splice(deleteBlockIndex, 1);
         } else {
           console.log("true1>>>>>");
-          fakeConstructor.splice(deleteBlockIndex + 1, 1);
+          fakeConstructor.splice(fakeConstructor.indexOf(currentBlock), 1);
         }
         if (deleteBlockIndex !== currentBlockIndex) {
           console.log("true1!======");
