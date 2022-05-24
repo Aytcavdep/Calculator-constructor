@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 export const calcItemSlice = createSlice({
   name: "calc_item",
   initialState: {
+    firstNumber: "",
     secondNumber: "",
     operator: "",
     result: "",
@@ -12,11 +13,15 @@ export const calcItemSlice = createSlice({
   reducers: {
     changeConstructorMode(state) {
       state.isConstructorMode = !state.isConstructorMode;
+      state.displayValue = 0;
     },
     pressButton(state, action) {
-      if (/\d/.test(action.payload)) {
+      if (
+        /\d/.test(action.payload) &&
+        (state.displayValue.length < 22 ||
+          state.displayValue.length === undefined)
+      ) {
         if (state.displayValue === 0) {
-          // state.constructor[0].items[0].value = action.payload;
           state.displayValue = action.payload;
         } else {
           state.displayValue += "" + action.payload;
@@ -38,7 +43,7 @@ export const calcItemSlice = createSlice({
           case "-":
             state.displayValue = +(
               parseFloat(state.firstNumber) - parseFloat(state.secondNumber)
-            ).toFixed(10);
+            ).toFixed(22);
             state.firstNumber = 0;
             state.secondNumber = 0;
             state.operator = "";
@@ -46,7 +51,7 @@ export const calcItemSlice = createSlice({
           case "+":
             state.displayValue = +(
               parseFloat(state.firstNumber) + parseFloat(state.secondNumber)
-            ).toFixed(10);
+            ).toFixed(22);
             state.firstNumber = 0;
             state.secondNumber = 0;
             state.operator = "";
@@ -54,7 +59,7 @@ export const calcItemSlice = createSlice({
           case "*":
             state.displayValue = +(
               parseFloat(state.firstNumber) * parseFloat(state.secondNumber)
-            ).toFixed(10);
+            ).toFixed(22);
             state.firstNumber = 0;
             state.secondNumber = 0;
             state.operator = "";
@@ -63,7 +68,7 @@ export const calcItemSlice = createSlice({
             if (+state.secondNumber !== 0) {
               state.displayValue = +(
                 parseFloat(state.firstNumber) / parseFloat(state.secondNumber)
-              ).toFixed(10);
+              ).toFixed(22);
               state.firstNumber = 0;
               state.secondNumber = 0;
               state.operator = "";

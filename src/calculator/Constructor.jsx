@@ -72,11 +72,14 @@ export const Constructor = () => {
       if (deleteBlockIndex !== -1) {
         console.log("true1");
         if (deleteBlockIndex < currentBlockIndex) {
+          console.log("true1<<<<");
           fakeConstructor.splice(deleteBlockIndex, 1);
         } else {
+          console.log("true1>>>>>");
           fakeConstructor.splice(deleteBlockIndex + 1, 1);
         }
         if (deleteBlockIndex !== currentBlockIndex) {
+          console.log("true1!======");
           fakeConstructor.splice(currentBlockIndex + 1, 0, currentBlock);
           setConstructorItem(fakeConstructor);
           removeConstructorLine();
@@ -177,6 +180,7 @@ export const Constructor = () => {
           <div className="buttonsBlock_area">
             {calcItem.map((block) => (
               <CalcBlockButtons
+                key={block.id}
                 block={block}
                 area="consrtructor_block"
                 onDragStart={(e) => dragStartHandler(e, block)}
@@ -187,7 +191,11 @@ export const Constructor = () => {
           </div>
         )}
         <div
-          className="calculator_area"
+          className={
+            !constructorItem.length
+              ? "calculator_area"
+              : "calculator_area not_empty"
+          }
           onDragOver={(e) => dragOverHandlerArea(e)}
           onDragLeave={(e) => dragLeaveHandler(e)}
           onDragEnd={(e) => dragEndHandler(e)}
@@ -203,9 +211,9 @@ export const Constructor = () => {
               </div>
             </div>
           )}
-          {/* {console.log("конструктор", constructorItem)} */}
           {constructorItem.map((block) => (
             <CalcBlockButtons
+              key={block.id}
               block={block}
               onDragOver={(e) => dragOverHandler(e, block)}
               onDragStart={(e) => dragStartHandler(e, block)}

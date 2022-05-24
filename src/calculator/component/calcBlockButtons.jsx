@@ -1,4 +1,5 @@
 import { CalcButton } from "./calcButton";
+import { useSelector } from "react-redux";
 
 export const CalcBlockButtons = ({
   block,
@@ -10,6 +11,9 @@ export const CalcBlockButtons = ({
   onDragOver,
   onDragLeave,
 }) => {
+  const isConstructorMode = useSelector(
+    (state) => state.calcItem.isConstructorMode
+  );
   const { id, title, isDraggable } = block;
   return area === "consrtructor_block" ? (
     <div
@@ -21,14 +25,14 @@ export const CalcBlockButtons = ({
       onDragEnd={onDragEnd}
     >
       {block.items.map((button) => (
-        <CalcButton button={button} />
+        <CalcButton button={button} key={button.id} />
       ))}
     </div>
   ) : (
     <div
       key={id}
       className={title}
-      draggable="true"
+      draggable={isConstructorMode}
       onDragStart={onDragStart}
       onDrop={onDrop}
       onDragEnd={onDragEnd}
@@ -37,7 +41,7 @@ export const CalcBlockButtons = ({
       onDoubleClick={onDoubleClick}
     >
       {block.items.map((button) => (
-        <CalcButton button={button} />
+        <CalcButton button={button} key={button.id} />
       ))}
     </div>
   );

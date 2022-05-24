@@ -2,14 +2,12 @@ export const calcItems = [
   {
     id: 1,
     title: "display",
-    isDisabled: false,
     isDraggable: true,
     items: [{ id: 1, title: "display", value: 0 }],
   },
   {
     id: 2,
     title: "operators",
-    isDisabled: false,
     isDraggable: true,
     items: [
       { id: 1, title: "divide", value: "/" },
@@ -21,7 +19,6 @@ export const calcItems = [
   {
     id: 3,
     title: "numeric_keypad",
-    isDisabled: false,
     isDraggable: true,
     items: [
       { id: 1, title: 7, value: 7 },
@@ -40,7 +37,6 @@ export const calcItems = [
   {
     id: 4,
     title: "calculate",
-    isDisabled: false,
     isDraggable: true,
     items: [{ id: 1, title: "calculate", value: "=" }],
   },
