@@ -22,7 +22,7 @@ export const Constructor = () => {
   const line = {
     id: 105,
     title: "line",
-    items: [{ id: 1, title: "" }],
+    items: [{ id: 1, title: "" }]
   };
 
   const isConstructorMode = useSelector(
@@ -43,71 +43,70 @@ export const Constructor = () => {
           item.id === id
             ? { ...item, isDraggable: !item.isDraggable }
             : { ...item }
-        ),
+        )
       ]);
     }
   };
   const addConstructorLine = (index) => {
-    if (!constructorItem.find((item) => item.id === 105)) {
-      const fakeConstructor = constructorItem;
-      fakeConstructor.splice(index + 1, 0, line);
-      setConstructorItem(fakeConstructor);
+    if (index === -1 && !constructorItem.length) {
+      index = 0;
+    } else if (index === -1) {
+      index = constructorItem.length + 1;
+    }
+    const cloneConstructorItem = constructorItem.slice();
+    if (!cloneConstructorItem.find((item) => item.id === 105)) {
+      cloneConstructorItem.splice(index + 1, 0, line);
+      setConstructorItem(cloneConstructorItem);
     }
   };
   const removeConstructorLine = () => {
     removeBlockConstructor(105);
   };
   const addConstructorBlock = (currentBlock) => {
-    const fakeConstructor = constructorItem;
+    const cloneConstructorItem = constructorItem.slice();
     if (currentBlock.title === "display") {
       if (deleteBlockIndex !== -1) {
-        console.log("true вщгиду");
       } else {
-        console.log("true");
-        fakeConstructor.unshift(currentBlock);
-        setConstructorItem(fakeConstructor);
+        cloneConstructorItem.unshift(currentBlock);
+        setConstructorItem(cloneConstructorItem);
       }
     } else if (currentBlockIndex !== -1 && currentBlockIndex !== undefined) {
-      console.log("true1");
       if (deleteBlockIndex !== -1) {
-        console.log("true1");
+        removeConstructorLine();
         if (deleteBlockIndex < currentBlockIndex) {
-          console.log("true1<<<<");
-          fakeConstructor.splice(deleteBlockIndex, 1);
+          cloneConstructorItem.splice(deleteBlockIndex, 1);
         } else {
-          console.log("true1>>>>>");
-          fakeConstructor.splice(fakeConstructor.indexOf(currentBlock), 1);
+          cloneConstructorItem.splice(
+            cloneConstructorItem.indexOf(currentBlock),
+            1
+          );
         }
         if (deleteBlockIndex !== currentBlockIndex) {
-          console.log("true1!======");
-          fakeConstructor.splice(currentBlockIndex + 1, 0, currentBlock);
-          setConstructorItem(fakeConstructor);
-          removeConstructorLine();
+          cloneConstructorItem.splice(currentBlockIndex + 1, 0, currentBlock);
+          setConstructorItem(cloneConstructorItem);
           setCurrentBlockIndex(-1);
         }
       } else {
-        console.log("true2");
-        fakeConstructor.splice(currentBlockIndex + 1, 0, currentBlock);
-        setConstructorItem(fakeConstructor);
+        cloneConstructorItem.splice(currentBlockIndex + 1, 0, currentBlock);
+        setConstructorItem(cloneConstructorItem);
         setCurrentBlockIndex(-1);
       }
     } else if (deleteBlockIndex !== -1) {
-      console.log("true3");
-      fakeConstructor.splice(deleteBlockIndex, 1);
-      fakeConstructor.splice(currentBlockIndex + 1, 0, currentBlock);
-      setConstructorItem(fakeConstructor);
+      cloneConstructorItem.splice(deleteBlockIndex, 1);
+      cloneConstructorItem.splice(currentBlockIndex + 1, 0, currentBlock);
+      setConstructorItem(cloneConstructorItem);
       setCurrentBlockIndex(-1);
     } else {
-      console.log("true4");
-      fakeConstructor.push(currentBlock);
-      setConstructorItem(fakeConstructor);
+      cloneConstructorItem.push(currentBlock);
+      setConstructorItem(cloneConstructorItem);
       setCurrentBlockIndex(-1);
     }
-    console.log("добавили объект", constructorItem);
   };
   const removeBlockButtons = (id) => {
-    removeBlockConstructor(id);
-    changeDraggableBlock(id, "del");
+    if (isConstructorMode) {
+      removeBlockConstructor(id);
+      changeDraggableBlock(id, "del");
+    }
   };
 
   const dragStartHandler = (e, block) => {
@@ -132,7 +131,7 @@ export const Constructor = () => {
     if (!targetClass) {
       setTargetClass(e.target.className);
 
-      addConstructorLine(6);
+      addConstructorLine(currentBlockIndex);
     }
   };
   const dragLeaveHandler = (e) => {
@@ -154,7 +153,6 @@ export const Constructor = () => {
 
   const dropHandlerConstructor = (e, block) => {
     e.preventDefault();
-    console.log("Вот эта сработала");
     removeConstructorLine();
     setTargetClass(0);
     changeDraggableBlock(currentBlock.id);
