@@ -3,7 +3,7 @@ import { CalcBlockButtons } from "./component/calcBlockButtons";
 import { useSelector } from "react-redux";
 import { calcItems } from "./component/calcItem";
 import { Icon } from "../icon/icon";
-import "./Constructor.css";
+import "../scss/Constructor.scss";
 import { Button } from "./component/button/Button";
 
 export const Constructor = () => {
@@ -173,7 +173,7 @@ export const Constructor = () => {
           disabled={isConstructorMode}
         />
       </div>
-      <div className="container">
+      <div className="constructor_area">
         {isConstructorMode && (
           <div className="buttonsBlock_area">
             {calcItem.map((block) => (

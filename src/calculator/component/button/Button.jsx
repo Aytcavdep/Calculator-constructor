@@ -1,4 +1,4 @@
-import "./Button.css";
+import "../../../scss/Button.scss";
 import { Icon } from "../../../icon/icon";
 import { changeConstructorMode } from "../../../slices/calcItemSlice";
 import { useDispatch } from "react-redux";
