@@ -1,42 +1,45 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CalcBlockButtons } from "./component/calcBlockButtons";
 import { useSelector } from "react-redux";
-import { calcItems } from "./component/calcItem";
+import { calcItems, CalcItemsProps } from "./component/calcItem";
 import { Icon } from "../icon/icon";
-import "./Constructor.css";
+import "../scss/Constructor.scss";
 import { Button } from "./component/button/Button";
+import { RootState } from "../redux/store";
 
 export const Constructor = () => {
-  const [calcItem, setCalcItem] = useState([]);
-  const [constructorItem, setConstructorItem] = useState([]);
+  const [calcItem, setCalcItem] = useState<CalcItemsProps[] | []>([]);
+  const [constructorItem, setConstructorItem] = useState<CalcItemsProps[] | []>(
+    []
+  );
   useEffect(() => {
     setCalcItem(calcItems);
   }, []);
 
-  const [currentBlock, setCurrentBlock] = useState(null);
+  const [currentBlock, setCurrentBlock] = useState<null | CalcItemsProps>(null);
   const [currentBlockIndex, setCurrentBlockIndex] = useState(-1);
 
-  const [targetClass, setTargetClass] = useState(0);
-  const [parentClass, setParentClass] = useState(0);
+  const [targetClass, setTargetClass] = useState<EventTarget>();
   const [deleteBlockIndex, setDeleteBlockIndex] = useState(-1);
   const line = {
     id: 105,
     title: "line",
-    items: [{ id: 1, title: "" }]
+    isDraggable: false,
+    items: [{ id: 1, title: "", value: "" }]
   };
 
   const isConstructorMode = useSelector(
-    (state) => state.calcItem.isConstructorMode
+    (state: RootState) => state.calcItem.isConstructorMode
   );
-  const findConstructorBlockIndex = ({ id }) => {
+  const findConstructorBlockIndex = ({ id }: { id: number }) => {
     return constructorItem.findIndex((items) => items.id === id);
   };
-  const removeBlockConstructor = (id) => {
+  const removeBlockConstructor = (id: number) => {
     if (isConstructorMode) {
       setConstructorItem([...constructorItem.filter((item) => item.id !== id)]);
     }
   };
-  const changeDraggableBlock = (id, del) => {
+  const changeDraggableBlock = (id: number, del?: string) => {
     if (!constructorItem.find((item) => item.id === id) || del === "del") {
       setCalcItem([
         ...calcItem.map((item) =>
@@ -47,7 +50,7 @@ export const Constructor = () => {
       ]);
     }
   };
-  const addConstructorLine = (index) => {
+  const addConstructorLine = (index: number) => {
     if (index === -1 && !constructorItem.length) {
       index = 0;
     } else if (index === -1) {
@@ -62,7 +65,7 @@ export const Constructor = () => {
   const removeConstructorLine = () => {
     removeBlockConstructor(105);
   };
-  const addConstructorBlock = (currentBlock) => {
+  const addConstructorBlock = (currentBlock: CalcItemsProps) => {
     const cloneConstructorItem = constructorItem.slice();
     if (currentBlock.title === "display") {
       if (deleteBlockIndex !== -1) {
@@ -102,61 +105,64 @@ export const Constructor = () => {
       setCurrentBlockIndex(-1);
     }
   };
-  const removeBlockButtons = (id) => {
+  const removeBlockButtons = (id: number) => {
     if (isConstructorMode) {
       removeBlockConstructor(id);
       changeDraggableBlock(id, "del");
     }
   };
 
-  const dragStartHandler = (e, block) => {
+  const dragStartHandler = (
+    e: React.DragEvent<HTMLDivElement>,
+    block: CalcItemsProps
+  ) => {
     setDeleteBlockIndex(findConstructorBlockIndex(block));
     setCurrentBlock(block);
   };
 
-  const dragOverHandler = (e, block) => {
+  const dragOverHandler = (
+    e: React.DragEvent<HTMLDivElement>,
+    block: CalcItemsProps
+  ) => {
     e.preventDefault();
     setCurrentBlockIndex(findConstructorBlockIndex(block));
-    setParentClass(e.target.className);
 
     if (!targetClass) {
-      setTargetClass(e.target.className);
-
+      setTargetClass(e.target);
       addConstructorLine(findConstructorBlockIndex(block));
     }
   };
 
-  const dragOverHandlerArea = (e) => {
+  const dragOverHandlerArea = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     if (!targetClass) {
-      setTargetClass(e.target.className);
-
+      setTargetClass(e.target);
       addConstructorLine(currentBlockIndex);
     }
   };
-  const dragLeaveHandler = (e) => {
-    if ((parentClass !== "items") & (e.target.className !== "items")) {
-      removeConstructorLine();
-      setTargetClass(0);
-    }
+  const dragLeaveHandler = (e: React.DragEvent<HTMLDivElement>) => {
+    removeConstructorLine();
+    setTargetClass(undefined);
   };
-  const dragEndHandler = (e) => {
+  const dragEndHandler = (e: React.DragEvent<HTMLDivElement>) => {
     removeConstructorLine();
   };
 
-  const dropHandler = (e, id) => {
+  const dropHandler = (e: React.DragEvent<HTMLDivElement>, id: number) => {
     e.preventDefault();
     removeConstructorLine();
-    setTargetClass(0);
+    setTargetClass(undefined);
     changeDraggableBlock(id);
   };
 
-  const dropHandlerConstructor = (e, block) => {
+  const dropHandlerConstructor = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     removeConstructorLine();
-    setTargetClass(0);
-    changeDraggableBlock(currentBlock.id);
-    addConstructorBlock(currentBlock);
+    setTargetClass(undefined);
+    if (currentBlock) {
+      changeDraggableBlock(currentBlock.id);
+      addConstructorBlock(currentBlock);
+    }
   };
 
   return (
@@ -173,7 +179,7 @@ export const Constructor = () => {
           disabled={isConstructorMode}
         />
       </div>
-      <div className="container">
+      <div className="constructor_area">
         {isConstructorMode && (
           <div className="buttonsBlock_area">
             {calcItem.map((block) => (
