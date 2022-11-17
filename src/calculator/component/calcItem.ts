@@ -1,9 +1,16 @@
-export const calcItems = [
+export type CalcItemsProps = {
+  id: number;
+  title: string;
+  isDraggable: boolean;
+  items: { id: number; title: string | number; value: string | number }[];
+};
+
+export const calcItems: CalcItemsProps[] = [
   {
     id: 1,
     title: "display",
     isDraggable: true,
-    items: [{ id: 1, title: "display", value: 0 }],
+    items: [{ id: 1, title: "display", value: 0 }]
   },
   {
     id: 2,
@@ -13,8 +20,8 @@ export const calcItems = [
       { id: 1, title: "divide", value: "/" },
       { id: 2, title: "multiply", value: "*" },
       { id: 3, title: "subtract", value: "-" },
-      { id: 4, title: "sum", value: "+" },
-    ],
+      { id: 4, title: "sum", value: "+" }
+    ]
   },
   {
     id: 3,
@@ -31,13 +38,13 @@ export const calcItems = [
       { id: 8, title: 2, value: 2 },
       { id: 9, title: 3, value: 3 },
       { id: 10, title: 0, value: 0 },
-      { id: 11, title: "point", value: "." },
-    ],
+      { id: 11, title: "point", value: "." }
+    ]
   },
   {
     id: 4,
     title: "calculate",
     isDraggable: true,
-    items: [{ id: 1, title: "calculate", value: "=" }],
-  },
+    items: [{ id: 1, title: "calculate", value: "=" }]
+  }
 ];

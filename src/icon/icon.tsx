@@ -1,4 +1,9 @@
-export const Icon = ({ name }) => {
+import React from "react";
+
+type IconProps = {
+  name: string;
+};
+export const Icon: React.FC<IconProps> = ({ name }) => {
   switch (name) {
     case "enable_calculator":
       return (

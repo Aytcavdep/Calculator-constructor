@@ -1,25 +1,34 @@
-import { createSlice } from "@reduxjs/toolkit";
-
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+type NumStr = number | string;
+type CalcItemSliceType = {
+  firstNumber: NumStr;
+  secondNumber: NumStr;
+  operator: string;
+  result: string;
+  isConstructorMode: boolean;
+  displayValue: NumStr;
+};
 export const calcItemSlice = createSlice({
   name: "calc_item",
-  initialState: {
-    firstNumber: "",
-    secondNumber: "",
+  initialState: <CalcItemSliceType>{
+    firstNumber: 0,
+    secondNumber: 0,
     operator: "",
     result: "",
     isConstructorMode: true,
-    displayValue: 0,
+    displayValue: 0
   },
   reducers: {
-    changeConstructorMode(state) {
+    changeConstructorMode(state, action: PayloadAction<boolean>) {
       state.isConstructorMode = !state.isConstructorMode;
       state.displayValue = 0;
     },
-    pressButton(state, action) {
+    pressButton(state, action: PayloadAction<NumStr>) {
       if (
-        /\d/.test(action.payload) &&
-        (state.displayValue.length < 22 ||
-          state.displayValue.length === undefined)
+        /\d/.test(String(action.payload)) &&
+        (typeof state.displayValue === "string"
+          ? state.displayValue.length < 22
+          : typeof state.displayValue === "number")
       ) {
         if (state.displayValue === 0) {
           state.displayValue = action.payload;
@@ -27,22 +36,27 @@ export const calcItemSlice = createSlice({
           state.displayValue += "" + action.payload;
         }
       }
-      if (/\./.test(action.payload) & !/\./.test(state.displayValue)) {
+      if (
+        /\./.test(String(action.payload)) &&
+        typeof state.displayValue === "string" &&
+        !/\./.test(state.displayValue)
+      ) {
         state.displayValue += "" + action.payload;
       }
 
-      if (/\+|-|\*|\//.test(action.payload)) {
+      if (/\+|-|\*|\//.test(String(action.payload))) {
         state.firstNumber = state.displayValue;
         state.displayValue = 0;
-        state.operator = action.payload;
+        state.operator = String(action.payload);
       }
 
-      if (/\=/.test(action.payload)) {
+      if (/\=/.test(String(action.payload))) {
         state.secondNumber = state.displayValue;
         switch (state.operator) {
           case "-":
             state.displayValue = +(
-              parseFloat(state.firstNumber) - parseFloat(state.secondNumber)
+              parseFloat(String(state.firstNumber)) -
+              parseFloat(String(state.secondNumber))
             ).toFixed(22);
             state.firstNumber = 0;
             state.secondNumber = 0;
@@ -50,7 +64,8 @@ export const calcItemSlice = createSlice({
             break;
           case "+":
             state.displayValue = +(
-              parseFloat(state.firstNumber) + parseFloat(state.secondNumber)
+              parseFloat(String(state.firstNumber)) +
+              parseFloat(String(state.secondNumber))
             ).toFixed(22);
             state.firstNumber = 0;
             state.secondNumber = 0;
@@ -58,7 +73,8 @@ export const calcItemSlice = createSlice({
             break;
           case "*":
             state.displayValue = +(
-              parseFloat(state.firstNumber) * parseFloat(state.secondNumber)
+              parseFloat(String(state.firstNumber)) *
+              parseFloat(String(state.secondNumber))
             ).toFixed(22);
             state.firstNumber = 0;
             state.secondNumber = 0;
@@ -67,7 +83,8 @@ export const calcItemSlice = createSlice({
           case "/":
             if (+state.secondNumber !== 0) {
               state.displayValue = +(
-                parseFloat(state.firstNumber) / parseFloat(state.secondNumber)
+                parseFloat(String(state.firstNumber)) /
+                parseFloat(String(state.secondNumber))
               ).toFixed(22);
               state.firstNumber = 0;
               state.secondNumber = 0;
@@ -84,8 +101,8 @@ export const calcItemSlice = createSlice({
             break;
         }
       }
-    },
-  },
+    }
+  }
 });
 
 export const { changeConstructorMode, pressButton } = calcItemSlice.actions;

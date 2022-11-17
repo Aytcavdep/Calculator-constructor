@@ -1,7 +1,7 @@
 import ReactDOM from "react-dom/client";
 import "./scss/index.scss";
 import { Provider } from "react-redux";
-import { store } from "./store/store";
+import { store } from "./redux/store";
 import { Constructor } from "./calculator/Constructor";
 
 const rootElem = document.getElementById("root");
