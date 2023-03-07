@@ -46,7 +46,7 @@ export const CalcBlockButtons: React.FC<CalcBlockButtonsProps> = ({
     <div
       key={id}
       className={title}
-      draggable={isConstructorMode}
+      draggable={title === "display" ? false : isConstructorMode}
       onDragStart={onDragStart}
       onDrop={onDrop}
       onDragEnd={onDragEnd}

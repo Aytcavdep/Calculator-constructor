@@ -126,7 +126,6 @@ export const Constructor = () => {
   ) => {
     e.preventDefault();
     setCurrentBlockIndex(findConstructorBlockIndex(block));
-
     if (!targetClass) {
       setTargetClass(e.target);
       addConstructorLine(findConstructorBlockIndex(block));
@@ -135,6 +134,8 @@ export const Constructor = () => {
 
   const dragOverHandlerArea = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
+    e.dataTransfer.dropEffect = "move";
+
     if (!targetClass) {
       setTargetClass(e.target);
       addConstructorLine(currentBlockIndex);
@@ -179,7 +180,11 @@ export const Constructor = () => {
           disabled={isConstructorMode}
         />
       </div>
-      <div className="constructor_area">
+      <div
+        className={
+          isConstructorMode ? "constructor_area" : "constructor_area runtime"
+        }
+      >
         {isConstructorMode && (
           <div className="buttonsBlock_area">
             {calcItem.map((block) => (
