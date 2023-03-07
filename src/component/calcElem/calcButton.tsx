@@ -1,7 +1,7 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import { pressButton } from "../../redux/slices/calcItemSlice";
-import { RootState, useAppDispatch } from "../../redux/store";
+import React from 'react';
+import { useSelector } from 'react-redux';
+import { pressButton } from '../../redux/slices/calcLogicSlice';
+import { RootState, useAppDispatch } from '../../redux/store';
 
 type CalcButtonProps = {
   button: {
@@ -18,7 +18,7 @@ export const CalcButton: React.FC<CalcButtonProps> = ({ button }) => {
   );
   const { id, value, title } = button;
   const buttonClick = (value: number | string, title: number | string) => {
-    if (!isConstructorMode && title !== "display") {
+    if (!isConstructorMode && title !== 'display') {
       dispatch(pressButton(value));
     }
   };
@@ -32,7 +32,7 @@ export const CalcButton: React.FC<CalcButtonProps> = ({ button }) => {
       }
       onClick={() => buttonClick(value, title)}
     >
-      <div>{title === "display" ? displayValue : value}</div>
+      <div>{title === 'display' ? displayValue : value}</div>
     </div>
   );
 };

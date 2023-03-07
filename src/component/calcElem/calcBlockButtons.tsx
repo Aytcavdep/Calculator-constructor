@@ -1,8 +1,6 @@
 import { CalcButton } from './calcButton';
-import { useSelector } from 'react-redux';
 import React from 'react';
 import { CalcItemsProps } from '../../data/calcItem';
-import { RootState } from '../../redux/store';
 
 type CalcBlockButtonsProps = {
   block: CalcItemsProps;
@@ -13,6 +11,7 @@ type CalcBlockButtonsProps = {
   onDrop?: (e: React.DragEvent<HTMLDivElement>) => void;
   onDragOver?: (e: React.DragEvent<HTMLDivElement>) => void;
   onDragLeave?: (e: React.DragEvent<HTMLDivElement>) => void;
+  isConstructorMode: boolean;
 };
 
 export const CalcBlockButtons: React.FC<CalcBlockButtonsProps> = ({
@@ -24,10 +23,8 @@ export const CalcBlockButtons: React.FC<CalcBlockButtonsProps> = ({
   onDrop,
   onDragOver,
   onDragLeave,
+  isConstructorMode,
 }) => {
-  const isConstructorMode = useSelector(
-    (state: RootState) => state.calcItem.isConstructorMode
-  );
   const { id, title, isDraggable } = block;
   return area === 'consrtructor_block' ? (
     <div

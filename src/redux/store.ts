@@ -1,11 +1,11 @@
-import { configureStore } from "@reduxjs/toolkit";
-import { useDispatch } from "react-redux";
-import calcItemSlice from "../redux/slices/calcItemSlice";
+import { configureStore } from '@reduxjs/toolkit';
+import { useDispatch } from 'react-redux';
+import calcLogicSlice from './slices/calcLogicSlice';
 
 export const store = configureStore({
   reducer: {
-    calcItem: calcItemSlice
-  }
+    calcItem: calcLogicSlice,
+  },
 });
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

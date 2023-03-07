@@ -1,6 +1,6 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 type NumStr = number | string;
-type CalcItemSliceType = {
+type CalcLogicSliceType = {
   firstNumber: NumStr;
   secondNumber: NumStr;
   operator: string;
@@ -8,15 +8,15 @@ type CalcItemSliceType = {
   isConstructorMode: boolean;
   displayValue: NumStr;
 };
-export const calcItemSlice = createSlice({
-  name: "calc_item",
-  initialState: <CalcItemSliceType>{
+export const calcLogicSlice = createSlice({
+  name: 'calc_item',
+  initialState: <CalcLogicSliceType>{
     firstNumber: 0,
     secondNumber: 0,
-    operator: "",
-    result: "",
+    operator: '',
+    result: '',
     isConstructorMode: true,
-    displayValue: 0
+    displayValue: 0,
   },
   reducers: {
     changeConstructorMode(state, action: PayloadAction<boolean>) {
@@ -26,22 +26,22 @@ export const calcItemSlice = createSlice({
     pressButton(state, action: PayloadAction<NumStr>) {
       if (
         /\d/.test(String(action.payload)) &&
-        (typeof state.displayValue === "string"
+        (typeof state.displayValue === 'string'
           ? state.displayValue.length < 22
-          : typeof state.displayValue === "number")
+          : typeof state.displayValue === 'number')
       ) {
         if (state.displayValue === 0) {
           state.displayValue = action.payload;
         } else {
-          state.displayValue += "" + action.payload;
+          state.displayValue += '' + action.payload;
         }
       }
       if (
         /\./.test(String(action.payload)) &&
-        typeof state.displayValue === "string" &&
+        typeof state.displayValue === 'string' &&
         !/\./.test(state.displayValue)
       ) {
-        state.displayValue += "" + action.payload;
+        state.displayValue += '' + action.payload;
       }
 
       if (/\+|-|\*|\//.test(String(action.payload))) {
@@ -53,34 +53,34 @@ export const calcItemSlice = createSlice({
       if (/\=/.test(String(action.payload))) {
         state.secondNumber = state.displayValue;
         switch (state.operator) {
-          case "-":
+          case '-':
             state.displayValue = +(
               parseFloat(String(state.firstNumber)) -
               parseFloat(String(state.secondNumber))
             ).toFixed(22);
             state.firstNumber = 0;
             state.secondNumber = 0;
-            state.operator = "";
+            state.operator = '';
             break;
-          case "+":
+          case '+':
             state.displayValue = +(
               parseFloat(String(state.firstNumber)) +
               parseFloat(String(state.secondNumber))
             ).toFixed(22);
             state.firstNumber = 0;
             state.secondNumber = 0;
-            state.operator = "";
+            state.operator = '';
             break;
-          case "*":
+          case '*':
             state.displayValue = +(
               parseFloat(String(state.firstNumber)) *
               parseFloat(String(state.secondNumber))
             ).toFixed(22);
             state.firstNumber = 0;
             state.secondNumber = 0;
-            state.operator = "";
+            state.operator = '';
             break;
-          case "/":
+          case '/':
             if (+state.secondNumber !== 0) {
               state.displayValue = +(
                 parseFloat(String(state.firstNumber)) /
@@ -88,12 +88,12 @@ export const calcItemSlice = createSlice({
               ).toFixed(22);
               state.firstNumber = 0;
               state.secondNumber = 0;
-              state.operator = "";
+              state.operator = '';
             } else {
-              state.displayValue = "Не определено";
+              state.displayValue = 'Не определено';
               state.firstNumber = 0;
               state.secondNumber = 0;
-              state.operator = "";
+              state.operator = '';
             }
 
             break;
@@ -101,10 +101,10 @@ export const calcItemSlice = createSlice({
             break;
         }
       }
-    }
-  }
+    },
+  },
 });
 
-export const { changeConstructorMode, pressButton } = calcItemSlice.actions;
+export const { changeConstructorMode, pressButton } = calcLogicSlice.actions;
 
-export default calcItemSlice.reducer;
+export default calcLogicSlice.reducer;
