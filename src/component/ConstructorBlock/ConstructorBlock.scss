@@ -1,0 +1,14 @@
+@import '../../scss/variables';
+.constructorBlock {
+  display: grid;
+  padding: 10px;
+  justify-content: center;
+  align-content: flex-start;
+  width: 243px;
+  height: 480px;
+
+  > [draggable='false'] {
+    cursor: no-drop;
+    opacity: 0.5;
+  }
+}

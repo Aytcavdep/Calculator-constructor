@@ -1,0 +1,49 @@
+@import '../../scss/variables';
+
+.calculatorBlock {
+  display: grid;
+  padding: 10px;
+  justify-content: center;
+  align-content: flex-start;
+  border: 2px dashed #c4c4c4;
+  padding: 10px;
+  border-radius: 6px;
+  width: 243px;
+  height: 480px;
+
+  > [draggable='false'] {
+    cursor: default;
+  }
+
+  &:hover {
+    background-color: #f0f9ff;
+  }
+
+  &.notEmpty {
+    border: none;
+    &:hover {
+      background-color: white;
+    }
+  }
+
+  .image {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 236px;
+    gap: 4px;
+
+    h3 {
+      font-size: 14px;
+      color: $activ_color;
+      margin: 0;
+      margin-top: 8px;
+      line-height: 17px;
+    }
+
+    div {
+      font-size: 12px;
+      color: #6b7280;
+    }
+  }
+}

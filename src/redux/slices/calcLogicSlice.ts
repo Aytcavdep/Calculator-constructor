@@ -27,7 +27,7 @@ export const calcLogicSlice = createSlice({
       if (
         /\d/.test(String(action.payload)) &&
         (typeof state.displayValue === 'string'
-          ? state.displayValue.length < 22
+          ? state.displayValue.length < 16
           : typeof state.displayValue === 'number')
       ) {
         if (state.displayValue === 0) {
@@ -37,9 +37,10 @@ export const calcLogicSlice = createSlice({
         }
       }
       if (
-        /\./.test(String(action.payload)) &&
-        typeof state.displayValue === 'string' &&
-        !/\./.test(state.displayValue)
+        (/\./.test(String(action.payload)) &&
+          typeof state.displayValue === 'string' &&
+          !/\./.test(state.displayValue)) ||
+        (/\./.test(String(action.payload)) && state.displayValue === 0)
       ) {
         state.displayValue += '' + action.payload;
       }
@@ -54,38 +55,46 @@ export const calcLogicSlice = createSlice({
         state.secondNumber = state.displayValue;
         switch (state.operator) {
           case '-':
-            state.displayValue = +(
-              parseFloat(String(state.firstNumber)) -
-              parseFloat(String(state.secondNumber))
-            ).toFixed(22);
+            state.displayValue = +parseFloat(
+              String(
+                parseFloat(String(state.firstNumber)) -
+                  parseFloat(String(state.secondNumber))
+              ).slice(0, 16)
+            );
             state.firstNumber = 0;
             state.secondNumber = 0;
             state.operator = '';
             break;
           case '+':
-            state.displayValue = +(
-              parseFloat(String(state.firstNumber)) +
-              parseFloat(String(state.secondNumber))
-            ).toFixed(22);
+            state.displayValue = +parseFloat(
+              String(
+                parseFloat(String(state.firstNumber)) +
+                  parseFloat(String(state.secondNumber))
+              ).slice(0, 16)
+            );
             state.firstNumber = 0;
             state.secondNumber = 0;
             state.operator = '';
             break;
           case '*':
-            state.displayValue = +(
-              parseFloat(String(state.firstNumber)) *
-              parseFloat(String(state.secondNumber))
-            ).toFixed(22);
+            state.displayValue = +parseFloat(
+              String(
+                parseFloat(String(state.firstNumber)) *
+                  parseFloat(String(state.secondNumber))
+              ).slice(0, 16)
+            );
             state.firstNumber = 0;
             state.secondNumber = 0;
             state.operator = '';
             break;
           case '/':
             if (+state.secondNumber !== 0) {
-              state.displayValue = +(
-                parseFloat(String(state.firstNumber)) /
-                parseFloat(String(state.secondNumber))
-              ).toFixed(22);
+              state.displayValue = +parseFloat(
+                String(
+                  parseFloat(String(state.firstNumber)) /
+                    parseFloat(String(state.secondNumber))
+                ).slice(0, 16)
+              );
               state.firstNumber = 0;
               state.secondNumber = 0;
               state.operator = '';

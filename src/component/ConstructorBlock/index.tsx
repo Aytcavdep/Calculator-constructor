@@ -1,6 +1,6 @@
 import { CalcBlockButtons } from '../calcElem/calcBlockButtons';
 import { CalcItemsProps } from '../../data/calcItem';
-//import './Constructor.scss';
+import './ConstructorBlock.scss';
 
 type ConstructorBlockProps = {
   isConstructorMode: boolean;
@@ -21,13 +21,13 @@ export const ConstructorBlock: React.FC<ConstructorBlockProps> = ({
   dropHandler,
 }) => {
   return (
-    <div className="buttonsBlock_area">
+    <div className="constructorBlock">
       {calcItem.map((block) => (
         <CalcBlockButtons
           isConstructorMode={isConstructorMode}
           key={block.id}
           block={block}
-          area="consrtructor_block"
+          area="constructorBlock"
           onDragStart={(e) => dragStartHandler(e, block)}
           onDragEnd={(e) => dragEndHandler(e)}
           onDrop={(e) => dropHandler(e, block.id)}

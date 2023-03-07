@@ -1,28 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { calcItems, CalcItemsProps } from '../../data/calcItem';
-import './Constructor.scss';
 import { Button } from '../Button';
 import { RootState, useAppDispatch } from '../../redux/store';
 import { changeConstructorMode } from '../../redux/slices/calcLogicSlice';
 import { ConstructorBlock } from '../ConstructorBlock';
 import { CalculatorBlock } from '../CalculatorBlock';
 import { line } from '../../data/line';
+import './Constructor.scss';
 
 export const Constructor = () => {
   const [calcItem, setCalcItem] = useState<CalcItemsProps[] | []>([]);
   const [constructorItem, setConstructorItem] = useState<CalcItemsProps[] | []>(
     []
   );
+  const [currentBlock, setCurrentBlock] = useState<null | CalcItemsProps>(null);
+  const [currentBlockIndex, setCurrentBlockIndex] = useState(-1);
+  const [targetClass, setTargetClass] = useState<EventTarget>();
+  const [deleteBlockIndex, setDeleteBlockIndex] = useState(-1);
+
   useEffect(() => {
     setCalcItem(calcItems);
   }, []);
-
-  const [currentBlock, setCurrentBlock] = useState<null | CalcItemsProps>(null);
-  const [currentBlockIndex, setCurrentBlockIndex] = useState(-1);
-
-  const [targetClass, setTargetClass] = useState<EventTarget>();
-  const [deleteBlockIndex, setDeleteBlockIndex] = useState(-1);
 
   const dispatch = useAppDispatch();
   const isConstructorMode = useSelector(
@@ -174,22 +173,24 @@ export const Constructor = () => {
   };
 
   return (
-    <div className="area">
-      <div className="button_area">
+    <div className="wrapper">
+      <div className="buttonSwitcher">
         <Button
-          className="enable_calculator"
+          className="buttonSwitcher__enableCalculator"
           title="Runtime"
-          disabled={!isConstructorMode}
-          switchConstructorMode={switchConstructorMode}
-        />
-        <Button
-          className="disable_calculator"
-          title="Constructor"
           disabled={isConstructorMode}
           switchConstructorMode={switchConstructorMode}
         />
+        <Button
+          className="buttonSwitcher__disableCalculator"
+          title="Constructor"
+          disabled={!isConstructorMode}
+          switchConstructorMode={switchConstructorMode}
+        />
       </div>
-      <div className={isConstructorMode ? 'layout' : 'layout runtime'}>
+      <div
+        className={isConstructorMode ? 'constructor' : 'constructor runtime'}
+      >
         {isConstructorMode && (
           <ConstructorBlock
             isConstructorMode={isConstructorMode}

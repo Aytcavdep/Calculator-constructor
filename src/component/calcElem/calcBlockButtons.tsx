@@ -1,6 +1,7 @@
 import { CalcButton } from './calcButton';
 import React from 'react';
 import { CalcItemsProps } from '../../data/calcItem';
+import './calcElem.scss';
 
 type CalcBlockButtonsProps = {
   block: CalcItemsProps;
@@ -26,7 +27,7 @@ export const CalcBlockButtons: React.FC<CalcBlockButtonsProps> = ({
   isConstructorMode,
 }) => {
   const { id, title, isDraggable } = block;
-  return area === 'consrtructor_block' ? (
+  return area === 'constructorBlock' ? (
     <div
       key={id}
       className={title}

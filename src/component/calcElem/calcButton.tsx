@@ -2,6 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { pressButton } from '../../redux/slices/calcLogicSlice';
 import { RootState, useAppDispatch } from '../../redux/store';
+import './calcElem.scss';
 
 type CalcButtonProps = {
   button: {

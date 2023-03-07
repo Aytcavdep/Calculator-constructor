@@ -1,11 +1,11 @@
-import React from "react";
+import React from 'react';
 
 type IconProps = {
   name: string;
 };
 export const Icon: React.FC<IconProps> = ({ name }) => {
   switch (name) {
-    case "enable_calculator":
+    case 'buttonSwitcher__enableCalculator':
       return (
         <svg
           width="20"
@@ -31,7 +31,7 @@ export const Icon: React.FC<IconProps> = ({ name }) => {
         </svg>
       );
 
-    case "image":
+    case 'image':
       return (
         <svg
           width="22"
@@ -66,7 +66,7 @@ export const Icon: React.FC<IconProps> = ({ name }) => {
         </svg>
       );
 
-    case "disable_calculator":
+    case 'buttonSwitcher__disableCalculator':
       return (
         <svg
           width="20"

@@ -1,7 +1,7 @@
 import { CalcBlockButtons } from '../calcElem/calcBlockButtons';
 import { CalcItemsProps } from '../../data/calcItem';
 import { Icon } from '../../IconSelector';
-//import './Constructor.scss';
+import './CalculatorBlock.scss';
 
 type CalculatorBlockType = {
   isConstructorMode: boolean;
@@ -35,9 +35,7 @@ export const CalculatorBlock: React.FC<CalculatorBlockType> = ({
   return (
     <div
       className={
-        !constructorItem.length
-          ? 'calculator_area'
-          : 'calculator_area not_empty'
+        !constructorItem.length ? 'calculatorBlock' : 'calculatorBlock notEmpty'
       }
       onDragOver={(e) => dragOverHandlerArea(e)}
       onDragLeave={(e) => dragLeaveHandler(e)}
