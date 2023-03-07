@@ -1,16 +1,15 @@
-@import '_variables.scss';
+@import '../../scss/variables';
 
 .area {
   width: 640px;
   height: 695px;
   margin: auto;
-  font-family: "Inter";
+  font-family: 'Inter';
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
   line-height: 15px;
   text-align: center;
-  
 
   .button_area {
     display: flex;
@@ -55,14 +54,13 @@
   height: 480px;
 }
 
-.buttonsBlock_area > [draggable="false"] {
+.buttonsBlock_area > [draggable='false'] {
   cursor: no-drop;
   opacity: 0.5;
 }
 
-.calculator_area > [draggable="false"] {
+.calculator_area > [draggable='false'] {
   cursor: default;
-  
 }
 
 .calculator_area {
@@ -74,35 +72,33 @@
     background-color: #f0f9ff;
   }
 
-
-&.not_empty {
-  border: none;
-  &:hover {
-    background-color: white;
-  }
-}
-
-.image {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 236px;
-  gap: 4px;
-
-  h3 {
-    font-size: 14px;
-    color: $activ_color;
-    margin: 0;
-    margin-top: 8px;
-    line-height: 17px;
+  &.not_empty {
+    border: none;
+    &:hover {
+      background-color: white;
+    }
   }
 
-  div {
-    font-size: 12px;
-    color: #6b7280;
-  }
-}
+  .image {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 236px;
+    gap: 4px;
 
+    h3 {
+      font-size: 14px;
+      color: $activ_color;
+      margin: 0;
+      margin-top: 8px;
+      line-height: 17px;
+    }
+
+    div {
+      font-size: 12px;
+      color: #6b7280;
+    }
+  }
 }
 
 .display,
@@ -155,19 +151,19 @@
 
 .display {
   height: 60px;
-  &[draggable="false"] > .calc_Button {
+  &[draggable='false'] > .calc_Button {
     cursor: no-drop;
   }
 
   &.hover:hover {
-    cursor:default;
+    cursor: default;
   }
   .calc_Button {
     width: 232px;
     height: 52px;
     background: $display_backgr;
 
-   div {
+    div {
       align-self: center;
       justify-self: end;
       font-weight: 800;
@@ -184,8 +180,6 @@
   cursor: pointer;
 }
 
-
-
 .calc_Button.display.hover > div {
   font-size: 19px;
 }
@@ -197,19 +191,17 @@
 .calculate {
   height: 72px;
 
-  &[draggable="false"] > .calc_Button:not(.hover) {
+  &[draggable='false'] > .calc_Button:not(.hover) {
     cursor: no-drop;
   }
-
-  
 
   .calc_Button {
     background-color: #5d5fef;
     width: 232px;
     height: 64px;
 
-    &.hover:hover  {
-      cursor:pointer;
+    &.hover:hover {
+      cursor: pointer;
     }
   }
 }
@@ -217,7 +209,7 @@
 .line {
   height: 1px;
   display: grid;
-  border: 1px solid #5D5FEF;
+  border: 1px solid #5d5fef;
   margin-bottom: 5px;
   width: 243px;
   grid-template-columns: 100%;
@@ -226,5 +218,3 @@
     border: none;
   }
 }
-
-

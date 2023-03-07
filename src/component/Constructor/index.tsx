@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { CalcBlockButtons } from "./component/calcBlockButtons";
-import { useSelector } from "react-redux";
-import { calcItems, CalcItemsProps } from "./component/calcItem";
-import { Icon } from "../icon/icon";
-import "../scss/Constructor.scss";
-import { Button } from "./component/button/Button";
-import { RootState } from "../redux/store";
+import React, { useEffect, useState } from 'react';
+import { CalcBlockButtons } from '../calcElem/calcBlockButtons';
+import { useSelector } from 'react-redux';
+import { calcItems, CalcItemsProps } from '../../data/calcItem';
+import { Icon } from '../../IconSelector';
+import './Constructor.scss';
+import { Button } from '../Button';
+import { RootState } from '../../redux/store';
 
 export const Constructor = () => {
   const [calcItem, setCalcItem] = useState<CalcItemsProps[] | []>([]);
@@ -23,9 +23,9 @@ export const Constructor = () => {
   const [deleteBlockIndex, setDeleteBlockIndex] = useState(-1);
   const line = {
     id: 105,
-    title: "line",
+    title: 'line',
     isDraggable: false,
-    items: [{ id: 1, title: "", value: "" }]
+    items: [{ id: 1, title: '', value: '' }],
   };
 
   const isConstructorMode = useSelector(
@@ -40,13 +40,13 @@ export const Constructor = () => {
     }
   };
   const changeDraggableBlock = (id: number, del?: string) => {
-    if (!constructorItem.find((item) => item.id === id) || del === "del") {
+    if (!constructorItem.find((item) => item.id === id) || del === 'del') {
       setCalcItem([
         ...calcItem.map((item) =>
           item.id === id
             ? { ...item, isDraggable: !item.isDraggable }
             : { ...item }
-        )
+        ),
       ]);
     }
   };
@@ -67,7 +67,7 @@ export const Constructor = () => {
   };
   const addConstructorBlock = (currentBlock: CalcItemsProps) => {
     const cloneConstructorItem = constructorItem.slice();
-    if (currentBlock.title === "display") {
+    if (currentBlock.title === 'display') {
       if (deleteBlockIndex !== -1) {
       } else {
         cloneConstructorItem.unshift(currentBlock);
@@ -108,7 +108,7 @@ export const Constructor = () => {
   const removeBlockButtons = (id: number) => {
     if (isConstructorMode) {
       removeBlockConstructor(id);
-      changeDraggableBlock(id, "del");
+      changeDraggableBlock(id, 'del');
     }
   };
 
@@ -134,7 +134,7 @@ export const Constructor = () => {
 
   const dragOverHandlerArea = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
-    e.dataTransfer.dropEffect = "move";
+    e.dataTransfer.dropEffect = 'move';
 
     if (!targetClass) {
       setTargetClass(e.target);
@@ -182,7 +182,7 @@ export const Constructor = () => {
       </div>
       <div
         className={
-          isConstructorMode ? "constructor_area" : "constructor_area runtime"
+          isConstructorMode ? 'constructor_area' : 'constructor_area runtime'
         }
       >
         {isConstructorMode && (
@@ -202,8 +202,8 @@ export const Constructor = () => {
         <div
           className={
             !constructorItem.length
-              ? "calculator_area"
-              : "calculator_area not_empty"
+              ? 'calculator_area'
+              : 'calculator_area not_empty'
           }
           onDragOver={(e) => dragOverHandlerArea(e)}
           onDragLeave={(e) => dragLeaveHandler(e)}
@@ -212,7 +212,7 @@ export const Constructor = () => {
         >
           {!constructorItem.length && (
             <div className="image">
-              <Icon name={"image"} />
+              <Icon name={'image'} />
               <h3>Перетащите сюда</h3>
               <div>
                 любой элемент

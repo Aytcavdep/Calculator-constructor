@@ -1,9 +1,9 @@
-import "../../../scss/Button.scss";
-import { Icon } from "../../../icon/icon";
-import { changeConstructorMode } from "../../../redux/slices/calcItemSlice";
-import React from "react";
-import { RootState, useAppDispatch } from "../../../redux/store";
-import { useSelector } from "react-redux";
+import './Button.scss';
+import { Icon } from '../../IconSelector';
+import { changeConstructorMode } from '../../redux/slices/calcItemSlice';
+import React from 'react';
+import { RootState, useAppDispatch } from '../../redux/store';
+import { useSelector } from 'react-redux';
 
 type ButtonProps = {
   className: string;
@@ -14,7 +14,7 @@ type ButtonProps = {
 export const Button: React.FC<ButtonProps> = ({
   className,
   title,
-  disabled
+  disabled,
 }) => {
   const dispatch = useAppDispatch();
   const isConstructorMode = useSelector((state: RootState) => state.calcItem);
