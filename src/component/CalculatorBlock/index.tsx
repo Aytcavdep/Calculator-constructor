@@ -1,7 +1,7 @@
-import { CalcBlockButtons } from '../calcElem/calcBlockButtons';
-import { CalcItemsProps } from '../../data/calcItem';
-import { Icon } from '../../IconSelector';
-import './CalculatorBlock.scss';
+import { CalcBlockButtons } from "../calcElem/calcBlockButtons";
+import { CalcItemsProps } from "../../data/calcItem";
+import { Icon } from "../../IconSelector";
+import "./CalculatorBlock.scss";
 
 type CalculatorBlockType = {
   isConstructorMode: boolean;
@@ -30,12 +30,16 @@ export const CalculatorBlock: React.FC<CalculatorBlockType> = ({
   dropHandlerConstructor,
   dragOverHandler,
   dragStartHandler,
-  removeBlockButtons,
+  removeBlockButtons
 }) => {
   return (
     <div
       className={
-        !constructorItem.length ? 'calculatorBlock' : 'calculatorBlock notEmpty'
+        (!constructorItem.length || constructorItem[0]?.id === 105
+          ? "calculatorBlock"
+          : "calculatorBlock notEmpty") +
+        " " +
+        (constructorItem[0]?.id === 105 ? "firstElement" : "")
       }
       onDragOver={(e) => dragOverHandlerArea(e)}
       onDragLeave={(e) => dragLeaveHandler(e)}
@@ -44,7 +48,7 @@ export const CalculatorBlock: React.FC<CalculatorBlockType> = ({
     >
       {!constructorItem.length && (
         <div className="image">
-          <Icon name={'image'} />
+          <Icon name={"image"} />
           <h3>Перетащите сюда</h3>
           <div>
             любой элемент

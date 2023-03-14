@@ -112,11 +112,12 @@
 }
 
 .line {
-  height: 1px;
+  height: 0px;
   display: grid;
+  justify-self: center;
   border: 1px solid #5d5fef;
-  margin-bottom: 5px;
-  width: 243px;
+  margin-top: -7px;
+  width: 232px;
   grid-template-columns: 100%;
 
   .calc_Button {

@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 type NumStr = number | string;
 type CalcLogicSliceType = {
   firstNumber: NumStr;
@@ -9,14 +9,14 @@ type CalcLogicSliceType = {
   displayValue: NumStr;
 };
 export const calcLogicSlice = createSlice({
-  name: 'calc_item',
+  name: "calc_item",
   initialState: <CalcLogicSliceType>{
     firstNumber: 0,
     secondNumber: 0,
-    operator: '',
-    result: '',
+    operator: "",
+    result: "",
     isConstructorMode: true,
-    displayValue: 0,
+    displayValue: 0
   },
   reducers: {
     changeConstructorMode(state, action: PayloadAction<boolean>) {
@@ -26,83 +26,98 @@ export const calcLogicSlice = createSlice({
     pressButton(state, action: PayloadAction<NumStr>) {
       if (
         /\d/.test(String(action.payload)) &&
-        (typeof state.displayValue === 'string'
+        (typeof state.displayValue === "string"
           ? state.displayValue.length < 16
-          : typeof state.displayValue === 'number')
+          : typeof state.displayValue === "number")
       ) {
         if (state.displayValue === 0) {
-          state.displayValue = action.payload;
+          state.displayValue = String(action.payload);
         } else {
-          state.displayValue += '' + action.payload;
+          state.displayValue === "Не определено"
+            ? (state.displayValue = "" + action.payload)
+            : state.operator !== "" && state.firstNumber === 0
+            ? ((state.firstNumber = state.displayValue),
+              (state.displayValue = "" + action.payload))
+            : (state.displayValue += "" + action.payload);
         }
       }
       if (
         (/\./.test(String(action.payload)) &&
-          typeof state.displayValue === 'string' &&
+          typeof state.displayValue === "string" &&
           !/\./.test(state.displayValue)) ||
         (/\./.test(String(action.payload)) && state.displayValue === 0)
       ) {
-        state.displayValue += '' + action.payload;
+        state.displayValue === "Не определено"
+          ? (state.displayValue = "" + 0 + action.payload)
+          : (state.displayValue += "" + action.payload);
       }
 
       if (/\+|-|\*|\//.test(String(action.payload))) {
-        state.firstNumber = state.displayValue;
-        state.displayValue = 0;
+        //state.firstNumber = state.displayValue;
+        // state.displayValue = 0;
         state.operator = String(action.payload);
       }
 
       if (/\=/.test(String(action.payload))) {
         state.secondNumber = state.displayValue;
         switch (state.operator) {
-          case '-':
-            state.displayValue = +parseFloat(
-              String(
-                parseFloat(String(state.firstNumber)) -
-                  parseFloat(String(state.secondNumber))
-              ).slice(0, 16)
-            );
-            state.firstNumber = 0;
-            state.secondNumber = 0;
-            state.operator = '';
-            break;
-          case '+':
-            state.displayValue = +parseFloat(
-              String(
-                parseFloat(String(state.firstNumber)) +
-                  parseFloat(String(state.secondNumber))
-              ).slice(0, 16)
-            );
-            state.firstNumber = 0;
-            state.secondNumber = 0;
-            state.operator = '';
-            break;
-          case '*':
-            state.displayValue = +parseFloat(
-              String(
-                parseFloat(String(state.firstNumber)) *
-                  parseFloat(String(state.secondNumber))
-              ).slice(0, 16)
-            );
-            state.firstNumber = 0;
-            state.secondNumber = 0;
-            state.operator = '';
-            break;
-          case '/':
-            if (+state.secondNumber !== 0) {
-              state.displayValue = +parseFloat(
+          case "-":
+            state.displayValue = String(
+              parseFloat(
                 String(
-                  parseFloat(String(state.firstNumber)) /
+                  parseFloat(String(state.firstNumber)) -
                     parseFloat(String(state.secondNumber))
                 ).slice(0, 16)
+              )
+            );
+            state.firstNumber = 0;
+            state.secondNumber = 0;
+            state.operator = "";
+            break;
+          case "+":
+            state.displayValue = String(
+              parseFloat(
+                String(
+                  parseFloat(String(state.firstNumber)) +
+                    parseFloat(String(state.secondNumber))
+                ).slice(0, 16)
+              )
+            );
+            state.firstNumber = 0;
+            state.secondNumber = 0;
+            state.operator = "";
+            break;
+          case "*":
+            state.displayValue = String(
+              parseFloat(
+                String(
+                  parseFloat(String(state.firstNumber)) *
+                    parseFloat(String(state.secondNumber))
+                ).slice(0, 16)
+              )
+            );
+            state.firstNumber = 0;
+            state.secondNumber = 0;
+            state.operator = "";
+            break;
+          case "/":
+            if (+state.secondNumber !== 0) {
+              state.displayValue = String(
+                parseFloat(
+                  String(
+                    parseFloat(String(state.firstNumber)) /
+                      parseFloat(String(state.secondNumber))
+                  ).slice(0, 16)
+                )
               );
               state.firstNumber = 0;
               state.secondNumber = 0;
-              state.operator = '';
+              state.operator = "";
             } else {
-              state.displayValue = 'Не определено';
+              state.displayValue = "Не определено";
               state.firstNumber = 0;
               state.secondNumber = 0;
-              state.operator = '';
+              state.operator = "";
             }
 
             break;
@@ -110,8 +125,8 @@ export const calcLogicSlice = createSlice({
             break;
         }
       }
-    },
-  },
+    }
+  }
 });
 
 export const { changeConstructorMode, pressButton } = calcLogicSlice.actions;

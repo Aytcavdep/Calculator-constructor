@@ -178,13 +178,13 @@ export const Constructor = () => {
         <Button
           className="buttonSwitcher__enableCalculator"
           title="Runtime"
-          disabled={isConstructorMode}
+          disabled={!isConstructorMode}
           switchConstructorMode={switchConstructorMode}
         />
         <Button
           className="buttonSwitcher__disableCalculator"
           title="Constructor"
-          disabled={!isConstructorMode}
+          disabled={isConstructorMode}
           switchConstructorMode={switchConstructorMode}
         />
       </div>
